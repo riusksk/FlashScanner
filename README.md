@@ -11,11 +11,14 @@ OSX/Linux
 由于工具使用到 flare06doswin 与 asdec 反编译工具，请使用者自行下载。
 
 ##使用方法：    
+		perl FlashScanner.pl <br>
+		 -g  Google 搜索语句 <br>
+		 -p  搜索结果的起始页数<br>
+     	 -u  指定Flash网址<br>
+     	 -f  本地swf文件路径<br>
+     	 -h  帮助信息   <br> 
 
-perl FlashScanner.pl <br>
-	 -g  Google 搜索语句 <br>
-     -p  搜索结果的起始页数<br>
-     -u  指定Flash网址<br>
-     -f  本地swf文件路径<br>
-     -h  帮助信息   <br> 
 Example: perl FlashScanner.pl -g "site:test.com filetype:swfinurl:player" -p 1
+
+##运行截图
+![](http://security.tencent.com/uploadimg_dir/201311/1159ecd6bbc1b6c40a58d7f394ec4005.png)
