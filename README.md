@@ -13,9 +13,9 @@ OSX/Linux
 ##使用方法：    
 
 perl FlashScanner.pl <br>
-	-g  Google 搜索语句 <br>
-    -p  搜索结果的起始页数<br>
-    -u  指定Flash网址<br>
-    -f  本地swf文件路径<br>
-    -h  帮助信息   <br> 
+	 -g  Google 搜索语句 <br>
+     -p  搜索结果的起始页数<br>
+     -u  指定Flash网址<br>
+     -f  本地swf文件路径<br>
+     -h  帮助信息   <br> 
 Example: perl FlashScanner.pl -g "site:test.com filetype:swfinurl:player" -p 1
