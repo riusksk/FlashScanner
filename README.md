@@ -8,7 +8,7 @@ OSX/Linux
 
 ##注意事项：
      
-由于工具使用到 flare06doswin 与 asdec 反编译工具，请使用者自行下载。
+由于工具使用到 flare06doswin，因此需要先安装wine才能运行。
 
 ##使用方法：    
 		perl FlashScanner.pl 
