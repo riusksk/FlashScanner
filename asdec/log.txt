@@ -1,0 +1,13 @@
+2013-1-30 15:20:36 com.jpexs.asdec.action.Action actionsToSource
+ÑÏÖØ: null
+java.util.EmptyStackException
+	at java.util.Stack.peek(Stack.java:85)
+	at java.util.Stack.pop(Stack.java:67)
+	at com.jpexs.asdec.action.Action.actionsToTree(Action.java:688)
+	at com.jpexs.asdec.action.Action.actionsToTree(Action.java:789)
+	at com.jpexs.asdec.action.Action.actionsToTree(Action.java:789)
+	at com.jpexs.asdec.action.Action.actionsToTree(Action.java:907)
+	at com.jpexs.asdec.action.Action.actionsToTree(Action.java:789)
+	at com.jpexs.asdec.action.Action.actionsToTree(Action.java:611)
+	at com.jpexs.asdec.action.Action.actionsToSource(Action.java:592)
+	at com.jpexs.asdec.action.gui.ActionPanel$1.run(ActionPanel.java:138)

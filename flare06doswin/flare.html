@@ -1,0 +1,162 @@
+<html>
+<head>
+<title>no|wrap.de - Flare</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link title="Classic" rel="stylesheet" type="text/css" href="classic.css">
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body topmargin=35 leftmargin=35 rightmargin=35 bottommargin=35 marginwidth=35 marginheight=35>
+<table cellpadding=30 cellspacing=0 border=0>
+<tr><td id="menutd">
+<table width="100%" cellpadding=0 cellspacing=0 border=0><tr>
+<td id="menu"><b><a href="http://www.nowrap.de/index.html">Vorwort</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.nowrap.de/portfolio.html">Portfolio</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Flare&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.nowrap.de/flasm.html">Flasm</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.nowrap.de/photo.html">Photo</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.nowrap.de/kontakt.html">Kontakt</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></td>
+<td>&nbsp;</td>
+<td id="menu" align="right"><a href="http://www.nowrap.de/login.php"><b>Login</b></a></td>
+</tr></table>
+<hr id="whitehr" noshade size="1">
+<i id="subhead">Flare is a free ActionScript decompiler. It decompiles SWFs produced by Macromedia Flash, including Flash MX 2004 and Flash 8.</i>
+</td></tr>
+<tr><td id="contenttd">
+<h3>What is it</h3>
+Flare processes an SWF and extracts all scripts from it. The output is written to a single text file. Only ActionScript is extracted, no text or images. Flare is freeware. Windows, Mac OS X and Linux versions are available.
+<p>
+The main purpose of decompiler is to help you recover your own lost source code. However, there are other uses, like finding out how a component works, or trying to understand poorly documented interface. Depending on where you live, some of them may be forbidden by law. It's your responsibility to make sure you don't break the law using Flare.
+<p>
+If you develop Flash applications for living, you probably know that your code is not secure in SWF. It's not the existence of decompiler that makes your code insecure though, it's design of SWF format. Although no ActionScipt is stored there, most of it can be recovered from bytecodes.
+
+<h3>Download and usage</h3>
+Most recent Flare version is <b>0.6</b>.
+<p>
+<b>Windows Explorer extension</b>
+<p>
+Download <a href="http://www.nowrap.de/download/flare06setup.exe">flare06setup.exe</a>. After installation right-click on any SWF file in Windows Explorer and choose <code>Decompile</code> from context menu. Flare will decompile <code>somename.swf</code> and store decomiled code in <code>somename.flr</code> in the same folder. <code>somename.flr</code> is a simple text file, you can open it with your favorite text editor. If Flare encounters problems during decompilation, it will display some warnings. If everything goes well, it will quit silently. That's all, Flare has no other GUI. To unistall, execute <code>Start&gt;Programs&gt;Flare&gt;Uninstall</code>.
+<p>
+<b>Mac OS X droplet</b>
+<p>
+Get <a href="http://www.nowrap.de/download/flare06.dmg">flare06.dmg</a>. After mounting the disc image drop an SWF file onto the Flare icon in Finder. The decompiled ActionScript will be stored in SWF's folder with FLR extension. Open it with your text editor. You can decompile multiple SWF files at once. The droplet is compiled on OS X 10.3. It should work on 10.2 and 10.4. There is no Flare for OS 9.
+<p>
+<b>Command line versions</b>
+<p>
+DOS/Windows binary:&nbsp; <a href="http://www.nowrap.de/download/flare06doswin.zip">flare06doswin.zip</a><br>
+Mac OS X binary:&nbsp; <a href="http://www.nowrap.de/download/flare06mac.tgz">flare06mac.tgz</a><br>
+Linux x86 binary:&nbsp; <a href="http://www.nowrap.de/download/flare06linux.tgz">flare06linux.tgz</a><br>
+Solaris x86 binary:&nbsp; <a href="http://www.nowrap.de/download/flare06solaris.tgz">flare06solaris.tgz</a>
+<p>
+There is no installation procedure for command line versions. Just create a folder named <code>flare</code> somewhere and unpack the archive there. To uninstall, delete the folder and you're done.
+<p>
+To use it, you have to open DOS window first (Windows). On Mac OS X, open Terminal: <code>Applications/Utilities/Terminal.</code> Now <code>cd</code> to the Flare folder and call Flare with SWF path and name as only parameter: <code>flare somepath\somename.swf</code> (Windows) or <code>./flare somepath/somename.swf</code> (Mac/Linux). There are no options. A text file named <code>somename.flr</code> will be created in SWF's folder, warnings (if any) will be shown to the console.
+<p>
+If you're unsure what Windows version to download, get Windows Explorer extension. Needless to say, for Mac you'll probably want to use the droplet.
+
+<h3>History</h3>
+In July 2003 I had some thoughts about effective SWF obfuscation. Obfuscation may be the wrong word though, I mean something more complex than renaming variables&nbsp;&#8212; kind of scrambling. Anyway, I decided to write a decompiler first to find out what's really hard to decompile, and Flare was born.
+I've learned a lot, and wanted to release a commercial scrambler in 2004. Since I don't seem to actually start implementing it, the idea is dropped by now.
+
+<h3>Project state</h3>
+Flare is not mature. Please don't rely on Flare doing anything important&nbsp;&#8212; source control comes to mind. It may not format your hard drive, but it probably will crash on some SWFs or fail to decompile certain patterns. If you happen to find such a pattern, and the bug isn't listed below, please tell me about it. It would be nice if instead of sending me the SWF, you try to localize the bug yourself, and attach the FLA containing failed code only.
+<p>
+Flare will never be a full-featured GUI decompiler like ASV. If I find time, Flare will continue to evolve in what it does. Better ActionScript II support would be a worthwile goal.
+
+<h3>Non bugs</h3>
+Nothing will happen if you right-click on SWF in your browser. On Windows, Flare adds <code>Decompile</code> entry to the right-click menu of Windows Explorer, not Internet Explorer.
+<p>
+Flare can't make changes in SWF&nbsp;&#8212; it's not a compiler. Decompiler and compiler are completely different matters. To change an SWF, you may try <a href="http://www.nowrap.de/flasm.html">Flasm</a> or <a href="http://www.mtasc.org">MTASC</a>.
+<p>
+No images, sounds or text are extracted&nbsp;&#8212; ActionScript only. I have no plans to add these in the near future.
+<p>
+There are no comments in SWF, they are compiled away. No decompiler can recover what's not there.
+<p>
+Flare doesn't work on earlier Mac OS versions. It only works on Mac OS X.
+<p>
+Flare may show equivalent code that looks different from original code and does the same. While I try to show the code in its original form, sometimes it's not possible. Before you submit a bug, please make sure the code is wrong.
+<p>
+Flare isn't well suited for simple cut'n'paste. In decompiled text file all frames, events and classes are shown together. To re-use it you have to know where the code belongs to.
+<p>
+Flare works best on code compiled in Flash. It's not always possible to decompile, say, hand-optimized code.
+<p>
+Flash may replace local variables with registers. Names of these variables are not recoverable. Neither are the names changed by obfuscators.
+<p>
+Some actions (f.e. <code>extends</code> and <code>implements</code>) won't compile outside of classes. As long as Flare doesn't decompile to ActionScript II, there is no way to show them correctly.
+
+<h3>Bugs and missing features</h3>
+Flare shows ActionScript I code even if source was ActionScript II. ActionScript II is mostly compiled to ActionScript I in SWF, with some additional instructions. There's no strong typing there, for example. While it would be possible to restore it, currently Flare can't do that.
+<p>
+ActionScript III (Flash Player 8.5) isn't supported. No format details are known yet.
+<p>
+<code>while</code> loops are shown instead of <code>for</code> loops. They are equivalent with one exception: <code>continue</code> statement. In the future I'll attempt to recover most <code>for</code> loops.
+<p>
+Multiple assignments <code>a = b = c = 10;</code> are shown as separate statements. Normally, it's not a problem. However, if used as loop condition, generated code may be incorrect.
+<p>
+You may be surprised by the code within <code>catch</code> clause of <code>try/catch/finally</code> block.
+Flash compiles typed exceptions to the code that actually checks the type of exception variable.
+Flare shows this code instead of restoring the more high-level original format.
+<p>
+Starting with Flash MX, movie clips may contain button event handlers. Flare incorrectly shows <code>onClipEvent</code> events instead of <code>on</code> events here. For buttons, correct event handlers are shown.
+<p>
+If left side of an assignment is calculated, Flare incorrectly uses <code>eval</code>. Since Flash MX, <code>eval</code> isn't allowed here, such assignment should be converted to <code>set(var,val);</code> form.
+<p>
+Flash 5 has no separate strict equality <code>===</code> or strict inequality <code>!==</code> operators, <code>typeof</code> is used instead. Flare will not recover them. Since <code>switch</code> statements depend on <code>===</code>, Flash 5 <code>switch</code> can't be recovered.
+<p>
+In Flash 5 SWFs the condition of <code>if</code> statement may be reversed: <code>(5&gt;v)</code> is shown instead of <code>(v&lt;5)</code>. It's not wrong, just unpleasant.
+<p>
+Flash optimizes certain branches away. Control flow recovery may be incomplete for edge cases.
+<p>
+Flare can't handle unicode file names.
+
+<h3>Related software</h3>
+
+<h4>Free</h4>
+
+<a href="http://www.nowrap.de/flasm.html">Flasm</a><br>
+Disassembler and assembler, maintained by yours truly. With Flasm, you can make changes to SWF. However, it doesn't show ActionScript&nbsp;&#8212; only bytecodes. If you're unfamiliar with them, it may be difficult to grasp. Free with source code.
+<p>
+<a href="http://www.mtasc.org">MTASC</a><br>
+Open source ActionScript II compiler. Flare output is probably not compatible with MTASC though.
+<p>
+<a href="http://osflash.org/">OSFlash</a><br>
+Community-run resource site for open source Flash projects and tools.
+
+<h4>Commercial</h4>
+
+All commercial decompilers extract images, sounds and text, not only ActionScript. I haven't made any tests regarding their quality. If you need one, try demo versions yourself.
+<p>
+<a href="http://buraks.com/asv/">Action Script Viewer</a><br>
+The first ActionScript decompiler for Windows.
+<p>
+<a href="http://www.srctec.com/flashdecompiler/">Sothink SWF Decompiler</a>
+<p>
+<a href="http://www.ave-imperator.com">Imperator FLA</a><br>
+Claims to re-build most of the original FLA from SWF, including ActionScript.
+<p>
+<a href="http://www.swfeditor.com">DeFlash</a><br>
+Low-cost decompiler, handles SWFs up to Flash MX.
+<p>
+<a href="http://www.futurecandy.com">Gordon</a><br>
+Decompiler for Mac.
+<p>
+<a href="http://www.kinesissoftware.com">KineticFusion</a><br>
+SWF to XML and back, including ActionScript. Expensive.
+
+<h3>Terms of use</h3>
+<p>
+Copyright &copy; 2003-2005&nbsp; Igor Kogan.<br>
+All rights reserved.
+<p>
+Flare is copyrighted freeware. It costs nothing. Neither do I ask for donations. However, there are some restrictions on its usage. Flare is provided &#8220;as is&#8221; and without any warranties. Please read the license included in the distribution for details. If you want to distribute Flare as part of commercial product, or need access to the source code, or do anything else that isn't covered by this license, please contact me for conditions.
+<p>
+Portions of Flare's tag parsing engine are based on Flasm.<br>
+Macromedia and Flash are registered trademarks of Macromedia, Inc.<br>
+Macromedia does not sponsor, affiliate, or endorse this product.
+
+<h3>Enjoy</h3>
+<a href="http://www.nowrap.de"><b>Igor Kogan</b></a>
+<p>
+<hr id="bluehr" noshade size="1">
+<table width="100%" cellpadding=0 cellspacing=0 border=0><tr>
+<td id="contenttd">Last update:&nbsp; 24 October 2005</td>
+<td align="right"><img src="logo.gif" alt="Logo" width="24" height="35" border="0"></td>
+</tr></table>
+</td></tr>
+</table>
+</body>
+</html>
