@@ -1,6 +1,6 @@
 ##工具简介：
  
-一款用于检测Flash漏洞库（http://web.appsec.ws/FlashExploitDatabase.php）的Perl工具，同时支持简单的flash xss检测
+一款用于检测Flash漏洞库（http://web.appsec.ws/FlashExploitDatabase.php） 的Perl工具，同时支持简单的flash xss检测
 
 ##运行环境：
  
