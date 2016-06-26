@@ -1,0 +1,616 @@
+movie 'tmp/cochin.swf' {
+// flash 8, total frames: 1, frame rate: 30 fps, 300x100 px, compressed
+
+  frame 1 {
+    sIFR.setDefaultStyles();
+    callbackType = '';
+    callbackValue = '';
+    callbackTrigger = false;
+    Options.apply();
+    sIFR.run();
+  }
+
+  movieClip 5  {
+  }
+
+  movieClip 20480 __Packages.SifrStyleSheet {
+
+    #initclip
+      if (!SifrStyleSheet) {
+        _global.SifrStyleSheet = function () {
+          super();
+        };
+
+        _global.SifrStyleSheet extends TextField.StyleSheet;
+        var v1 = _global.SifrStyleSheet.prototype;
+        v1.parseCSS = function (cssText) {
+          var v3 = new TextField.StyleSheet();
+          var v4 = v3.parseCSS(cssText);
+          if (!v4) {
+            return false;
+          }
+          var v5 = v3.getStyleNames();
+          var v6 = v5.length - 1;
+          goto 521;
+          for (;;) {
+            --v6;
+            label 521:
+            if (v6 < 0) break;
+            var v7 = v5[v6];
+            var v8 = v3.getStyle(v7);
+            var v9 = this.getStyle(v7) || v8;
+            if (v9 != v8) {
+              for (var property in v8) {
+                v9[property] = v8[property];
+              }
+            }
+            this.setStyle(v7, v9);
+          }
+          return true;
+        };
+
+        v1.applyLeading = function (format, leading) {
+          this.latestLeading = leading;
+          leading = _global.parseInt(leading, 10) + sIFR.LEADING_REMAINDER;
+          if (leading >= 0) {
+            format.leading = leading;
+            return format;
+          }
+          var v4 = new TextFormat(null, null, null, null, null, null, null, null, null, null, null, null, leading);
+          for (var property in format) {
+            if (property != 'leading') {
+              v4[property] = format[property];
+            }
+          }
+          return v4;
+        };
+
+        v1.transform = function (style) {
+          var v4 = super.transform(style);
+          if (style.leading) {
+            v4 = this.applyLeading(v4, style.leading);
+          }
+          if (style.letterSpacing) {
+            v4.letterSpacing = style.letterSpacing;
+          }
+          if (style.fontSize) {
+            if (this.fontSize && style.fontSize.indexOf('%') > 0) {
+              v4.size = this.fontSize * _global.parseInt(style.fontSize, 10) / 100;
+            } else {
+              v4.size = _global.parseInt(style.fontSize, 10);
+            }
+          }
+          v4.kerning = _root.kerning == 'true' || (_root.kerning != 'false' || sIFR.defaultKerning);
+          return v4;
+        };
+
+        ASSetPropFlags(v1, null, 1);
+        v1.latestLeading = 0;
+      }
+    #endinitclip
+  }
+
+  movieClip 20481 __Packages.sIFR {
+
+    #initclip
+      if (!sIFR) {
+        _global.sIFR = function (textField, content) {
+          sIFR.instance = this;
+          this.textField = textField;
+          this.content = content;
+          this.primaryLink = sIFR.unescapeUnicode(_root.link);
+          this.primaryLinkTarget = sIFR.unescapeUnicode(_root.target);
+          var v4 = _global.parseInt(_root.offsetleft, 10);
+          textField._x = sIFR.MARGIN_LEFT + (_global.isNaN(v4) ? 0 : v4);
+          var v5 = _global.parseInt(_root.offsettop, 10);
+          if (!_global.isNaN(v5)) {
+            textField._y += v5;
+          }
+          this.tuneWidth = _global.parseInt(_root.tunewidth, 10);
+          if (_global.isNaN(this.tuneWidth)) {
+            this.tuneWidth = 0;
+          }
+          this.tuneHeight = _global.parseInt(_root.tuneheight, 10);
+          if (_global.isNaN(this.tuneHeight)) {
+            this.tuneHeight = 0;
+          }
+          this.renderHeight = _global.parseInt(_root.renderheight, 10);
+          this.setTextFieldSize(_global.parseInt(_root.width, 10), _global.parseInt(this.renderHeight, 10));
+          this.forceSingleLine = _root.forcesingleline == 'true';
+          textField.wordWrap = _root.preventwrap != 'true';
+          textField.selectable = _root.selectable == 'true';
+          textField.gridFitType = sIFR.enforcedGridFitType || _root.gridfittype;
+          this.applyFilters();
+          this.applyBackground();
+          this.fontSize = _global.parseInt(_root.size, 10);
+          if (_global.isNaN(this.fontSize)) {
+            this.fontSize = 26;
+          }
+          this.setStyles(sIFR.unescapeUnicode(_root.css), false);
+          if (!sIFR.preserveAntiAlias && (sIFR.conditionalAntiAlias && this.fontSize < sIFR.ALIASING_MAX_FONT_SIZE || !sIFR.conditionalAntiAlias)) {
+            textField.antiAliasType = (_root.antialiastype != '') ? _root.antialiastype : sIFR.antiAliasType || sIFR.DEFAULT_ANTI_ALIAS_TYPE;
+          }
+          if (!sIFR.preserveAntiAlias || !_global.isNaN(_global.parseInt(_root.sharpness, 10))) {
+            textField.sharpness = _global.parseInt(_root.sharpness, 10);
+          }
+          if (_global.isNaN(textField.sharpness)) {
+            textField.sharpness = sIFR.defaultSharpness;
+          }
+          if (!sIFR.preserveAntiAlias || !_global.isNaN(_global.parseInt(_root.thickness, 10))) {
+            textField.thickness = _global.parseInt(_root.thickness, 10);
+          }
+          if (_global.isNaN(textField.thickness)) {
+            textField.thickness = sIFR.defaultThickness;
+          }
+          textField._parent._yscale = 100;
+          textField._parent._xscale = 100;
+          this.setupEvents();
+          this.write(content);
+          this.repaint();
+        };
+
+        var v1 = _global.sIFR.prototype;
+        _global.sIFR.setDefaultStyles = function () {
+          sIFR.styles.parseCSS(['.', sIFR.CSS_ROOT_CLASS, ' { color: #000000; }', 'strong { display: inline; font-weight: bold; } ', 'em { display: inline; font-style: italic; }', 'a { color: #0000FF; text-decoration: underline; }', 'a:hover { color: #0000FF; text-decoration: none; }'].join(''));
+        };
+
+        _global.sIFR.checkDomain = function () {
+          if (sIFR.domains.length == 0) {
+            return true;
+          }
+          var v2 = (new LocalConnection()).domain();
+          var v3 = 0;
+          goto 4930;
+          for (;;) {
+            ++v3;
+            label 4930:
+            if (v3 >= sIFR.domains.length) break;
+            var v4 = sIFR.domains[v3];
+            if (v4 == '*' || v4 == v2) {
+              return true;
+            }
+            var v5 = v4.lastIndexOf('*');
+            if (v5 > -1) {
+              v4 = v4.substr(v5 + 1);
+              var v6 = v2.lastIndexOf(v4);
+              if (v6 > -1 && v6 + v4.length == v2.length) {
+                return true;
+              }
+            }
+          }
+          return false;
+        };
+
+        _global.sIFR.checkLocation = function () {
+          return _root._url.indexOf('?') == -1;
+        };
+
+        _global.sIFR.run = function (delayed) {
+          if (_root.delayrun == 'true' && !delayed) {
+            var interval;
+            interval = _global.setInterval(function () {
+              _global.clearInterval(interval);
+              sIFR.run(true);
+            }, 200);
+            return undefined;
+          }
+          sIFR.menuItems.push(new ContextMenuItem('Follow link', function () {
+            getURL(sIFR.instance.primaryLink, sIFR.instance.primaryLinkTarget);
+          }), new ContextMenuItem('Open link in new window', function () {
+            getURL(sIFR.instance.primaryLink, '_blank');
+          }));
+          var v3 = _root.holder;
+          var v4 = sIFR.DEFAULT_TEXT;
+          var v5 = true;
+          if (sIFR.checkLocation() && sIFR.checkDomain()) {
+            v4 = sIFR.unescapeUnicode(_root.content);
+          }
+          if (v4 == 'undefined' || v4 == '') {
+            var v6 = flash.external.ExternalInterface.call('sIFR.__resetBrokenMovies');
+            if (v6) {
+              return undefined;
+            }
+            v4 = sIFR.DEFAULT_TEXT;
+            v5 = false;
+          }
+          if (v5 && _root.version != sIFR.VERSION) {
+            v4 = (sIFR.VERSION_WARNING.split('%s')).join(_root.version);
+          }
+          Stage.scaleMode = 'noscale';
+          Stage.align = 'TL';
+          sIFR.menu = new ContextMenu();
+          sIFR.menu.hideBuiltInItems();
+          _root.menu = sIFR.menu;
+          var v7 = _global.parseInt(_root.opacity, 10);
+          if (!_global.isNaN(v7)) {
+            v3._alpha = (sIFR.defaultOpacity == -1) ? v7 : sIFR.defaultOpacity;
+          } else {
+            v3._alpha = 100;
+          }
+          _root.blendMode = (sIFR.defaultBlendMode == -1) ? _root.blendmode : sIFR.defaultBlendMode;
+          sIFR.instance = new sIFR(v3.txtF, v4);
+          Key.addListener({'onKeyDown': function () {
+            sIFR.instance.blur();
+          }});
+          Mouse.addListener({'onMouseWheel': function () {
+            sIFR.instance.blur();
+          }});
+          Stage.addListener({'onResize': function () {
+            sIFR.instance.onResize();
+          }});
+          if (_root.selectable == 'false') {
+            Mouse.addListener({'onMouseDown': function () {
+              sIFR.instance.blur();
+            }});
+          }
+          if (_root.cursor == 'arrow') {
+            _root.holder.useHandCursor = false;
+          }
+          flash.external.ExternalInterface.addCallback('replaceText', sIFR.instance, sIFR.instance.replaceText);
+          flash.external.ExternalInterface.addCallback('calculateRatios', sIFR.instance, sIFR.instance.calculateRatios);
+          flash.external.ExternalInterface.addCallback('resize', sIFR.instance, sIFR.instance.resize);
+          flash.external.ExternalInterface.addCallback('scaleMovie', sIFR.instance, sIFR.instance.repaint);
+          flash.external.ExternalInterface.addCallback('changeCSS', sIFR.instance, sIFR.instance.changeCSS);
+        };
+
+        _global.sIFR.eval = function (str) {
+          if (str.charAt(0) == '{') {
+            var v3 = {};
+            str = str.substring(1, str.length - 1);
+            var v4 = str.split(',');
+            var v5 = 0;
+            goto 6974;
+            for (;;) {
+              ++v5;
+              label 6974:
+              if (v5 >= v4.length) break;
+              var v6 = v4[v5].split(':');
+              v3[v6[0]] = sIFR.eval(v6[1]);
+            }
+            return v3;
+          }
+          if (str.charAt(0) == '"') {
+            v3 = str.substring(1, str.length - 1);
+            return v3;
+          }
+          if (str == 'true' || str == 'false') {
+            v3 = str == 'true';
+            return v3;
+          }
+          v3 = _global.parseFloat(str);
+          return v3;
+        };
+
+        _global.sIFR.unescapeUnicode = function (str) {
+          var v3 = [];
+          var v4 = str.split('%');
+          var v5 = 0;
+          goto 7308;
+          for (;;) {
+            ++v5;
+            label 7308:
+            if (v5 >= v4.length) break;
+            var v6 = v4[v5];
+            if (v5 > 0 || str.charAt(0) == '%') {
+              var v7 = (v6.charAt(0) == 'u') ? v6.substr(1, 4) : v6.substr(0, 2);
+              v3.push(String.fromCharCode(_global.parseInt(v7, 16)), v6.substr((v6.charAt(0) == 'u') ? 5 : 2));
+            } else {
+              v3.push(v6);
+            }
+          }
+          return v3.join('');
+        };
+
+        v1.applyFilters = function () {
+          var v2 = this.textField.filters;
+          v2 = v2.concat(sIFR.filters);
+          var v3 = (sIFR.unescapeUnicode(_root.flashfilters)).split(';');
+          var v4 = 0;
+          goto 7775;
+          for (;;) {
+            ++v4;
+            label 7775:
+            if (v4 >= v3.length) break;
+            var v5 = v3[v4].split(',');
+            var v6 = new sIFR.filterMap[v5[0]]();
+            var v7 = 1;
+            goto 7881;
+            for (;;) {
+              ++v7;
+              label 7881:
+              if (v7 >= v5.length) break;
+              var v8 = v5[v7].split(':');
+              v6[v8[0]] = sIFR.eval(sIFR.unescapeUnicode(v8[1]));
+            }
+            v2.push(v6);
+          }
+          this.textField.filters = v2;
+        };
+
+        v1.applyBackground = function () {
+          if (!_root.background) {
+            return undefined;
+          }
+          var background = _root.createEmptyMovieClip('backgroundClip', 10);
+          var v2 = new MovieClipLoader();
+          v2.addListener({'onLoadInit': function () {
+            background.setMask(_root.holder);
+          }});
+          v2.loadClip('/projectfiles/img.jpg', background);
+        };
+
+        v1.setTextFieldSize = function (width, height) {
+          this.textField._width = this.tuneWidth + (_global.isNaN(width) ? sIFR.DEFAULT_WIDTH : width);
+          this.textField._height = this.tuneHeight + (_global.isNaN(height) ? sIFR.DEFAULT_HEIGHT : height);
+        };
+
+        _global.sIFR.call = function (method) {
+          var v3 = Array.prototype.slice.call(arguments, 1);
+          v3.unshift('sIFR.replacements["' + _root.id + '"].' + super);
+          return flash.external.ExternalInterface.call.apply(flash.external.ExternalInterface, v3);
+        };
+
+        v1.repaint = function () {
+          if (this.forceSingleLine) {
+            this.textField._width = 50000;
+            this.textField._width = this.textField.textWidth + 500;
+          }
+          var v2 = this.isSingleLine() ? sIFR.styles.latestLeading : 0;
+          this.textField._height = Math.max(sIFR.MIN_HEIGHT, this.textField.textHeight + sIFR.PADDING_BOTTOM + this.tuneHeight - v2) + this.fontSize + Math.abs(this.tuneHeight);
+          this.realHeight = Math.floor(this.textField._height - this.fontSize - Math.abs(this.tuneHeight));
+          var width = (_root.fitexactly == 'true') ? this.textField.textWidth + this.tuneWidth : null;
+          this.doScale(function () {
+            var v2 = sIFR.instance.firstResize;
+            sIFR.instance.firstResize = false;
+            sIFR.call('resizeFlashElement', sIFR.instance.realHeight, width, v2);
+            sIFR.instance.renderHeight = sIFR.instance.realHeight;
+          });
+        };
+
+        v1.write = function (content) {
+          this.textField.htmlText = ['<p class="', sIFR.CSS_ROOT_CLASS, '">', content, '</p>'].join('');
+        };
+
+        v1.isSingleLine = function () {
+          return Math.round((this.textField.textHeight - sIFR.styles.latestLeading) / this.fontSize) == 1;
+        };
+
+        v1.doScale = function (callback) {
+          if (this.validScale()) {
+            return this.scale(callback);
+          }
+          var self = this;
+          this.textField._parent.onEnterFrame = function () {
+            if (!self.validScale()) {
+              return undefined;
+            }
+            delete self.textField._parent.onEnterFrame;
+            self.scale(callback);
+          };
+
+        };
+
+        v1.scale = function (callback) {
+          this.textField._parent._yscale = this.calculateScale();
+          this.textField._parent._xscale = this.textField._parent._yscale;
+          if (callback) {
+            callback();
+          }
+        };
+
+        v1.calculateScale = function () {
+          return 10 * Math.round(10 * Stage.height / this.renderHeight);
+        };
+
+        v1.validScale = function () {
+          return Stage.height >= 10 && this.calculateScale() >= 20;
+        };
+
+        v1.onResize = function () {
+          if (!this.validScale()) {
+            return undefined;
+          }
+          var v2 = this.textField._parent._xscale;
+          var v3 = this.calculateScale();
+          this.scale();
+          if (v2 != v3) {
+            sIFR.call('resizeAfterScale');
+          }
+        };
+
+        v1.calculateRatios = function () {
+          var v2 = ['x', 'x<br>x', 'x<br>x<br>x', 'x<br>x<br>x<br>x'];
+          var v3 = {};
+          this.setTextFieldSize(1000, 1000);
+          var v4 = 1;
+          goto 9920;
+          for (;;) {
+            ++v4;
+            label 9920:
+            if (v4 > v2.length) break;
+            var v5 = sIFR.MIN_FONT_SIZE;
+            this.write(v2[v4 - 1]);
+            while (v5 < sIFR.MAX_FONT_SIZE) {
+              var v6 = sIFR.styles.getStyle('.sIFR-root') || {};
+              v6.fontSize = v5;
+              sIFR.styles.setStyle('.sIFR-root', v6);
+              this.textField.styleSheet = sIFR.styles;
+              this.repaint();
+              var v7 = (this.realHeight - sIFR.PADDING_BOTTOM - this.tuneHeight) / v4 / v5;
+              if (!v3[v5]) {
+                v3[v5] = v7;
+              } else {
+                v3[v5] = ((v4 - 1) * v3[v5] + v7) / v4;
+              }
+              ++v5;
+            }
+          }
+          var v8 = [];
+          var v9 = this.roundDecimals(v3[sIFR.MIN_FONT_SIZE], 2);
+          var v10 = sIFR.MIN_FONT_SIZE + 1;
+          goto 10354;
+          for (;;) {
+            ++v10;
+            label 10354:
+            if (v10 >= sIFR.MAX_FONT_SIZE) break;
+            var v11 = this.roundDecimals(v3[v10], 2);
+            if (v9 != v3[v10 - 1] && (v9 != v11 && Math.abs(Math.round(v10 * v11) - Math.round(v10 * v9)) >= 1)) {
+              v8.push(v10 - 1, v9);
+              v9 = v11;
+            }
+          }
+          v8.push(v9);
+          flash.external.ExternalInterface.call('sIFR.debug.__ratiosCallback', _root.id, v8);
+        };
+
+        v1.roundDecimals = function (value, decimals) {
+          return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals);
+        };
+
+        v1.replaceText = function (content) {
+          this.content = sIFR.unescapeUnicode(content);
+          this.setupEvents();
+          this.write(this.content);
+          this.repaint();
+        };
+
+        v1.resize = function (height) {
+          this.setTextFieldSize(height, this.realHeight);
+          this.repaint();
+        };
+
+        v1.changeCSS = function (css) {
+          this.setStyles(sIFR.unescapeUnicode(css), true);
+          this.repaint();
+        };
+
+        v1.contentIsLink = function () {
+          return this.content.indexOf('<a ') == 0 && (this.content.indexOf('<a ') == this.content.lastIndexOf('<a ') && this.content.indexOf('</a>') == this.content.length - 4);
+        };
+
+        v1.setupEvents = function () {
+          if (_root.fixhover == 'true' && this.contentIsLink()) {
+            this.textField._parent.onRollOver = function () {
+              sIFR.call('fireEvent', 'onRollOver');
+            };
+
+            this.textField._parent.onRollOut = function () {
+              sIFR.instance.fixHover();
+              sIFR.call('fireEvent', 'onRollOut');
+            };
+
+            this.textField._parent.onRelease = function () {
+              sIFR.call('fireEvent', 'onRelease');
+              getURL(sIFR.instance.primaryLink, sIFR.instance.primaryLinkTarget);
+            };
+
+            sIFR.menu.customItems = sIFR.menuItems;
+          } else {
+            if (_root.events == 'true') {
+              this.textField._parent.onRollOver = function () {
+                sIFR.call('fireEvent', 'onRollOver');
+              };
+
+              this.textField._parent.onRollOut = function () {
+                sIFR.call('fireEvent', 'onRollOut');
+              };
+
+              this.textField._parent.onRelease = function () {
+                sIFR.call('fireEvent', 'onRelease');
+              };
+
+            } else {
+              if (_root.cursor == 'pointer') {
+                this.textField._parent.onRelease = function () {};
+
+              } else {
+                delete this.textField._parent.onRelease;
+              }
+              delete this.textField._parent.onRollOver;
+              delete this.textField._parent.onRollOut;
+            }
+            sIFR.menu.customItems = [];
+          }
+        };
+
+        v1.fixHover = function () {
+          this.write('');
+          this.write(this.content);
+        };
+
+        v1.blur = function () {
+          switch (Key.getCode()) {
+              if (Key.getCode() !== Key.CONTROL) {
+              } else {
+              case Key.SHIFT:
+                break;
+              }
+            default:
+              sIFR.call('blurFlashElement');
+          }
+        };
+
+        v1.setStyles = function (css, reset) {
+          if (reset) {
+            sIFR.styles = new SifrStyleSheet();
+            sIFR.setDefaultStyles();
+          }
+          sIFR.styles.fontSize = this.fontSize;
+          sIFR.styles.parseCSS(css);
+          var v4 = sIFR.styles.getStyle('.sIFR-root') || {};
+          v4.fontSize = this.fontSize;
+          sIFR.styles.setStyle('.sIFR-root', v4);
+          this.textField.styleSheet = sIFR.styles;
+        };
+
+        ASSetPropFlags(v1, null, 1);
+        _global.sIFR.DEFAULT_TEXT = 'Rendered with sIFR 3, revision 436<br><strong>Rendered with sIFR 3, revision 436</strong><br><em>Rendered with sIFR 3, revision 436</em><br><strong><em>Rendered with sIFR 3, revision 436</em></strong>';
+        _global.sIFR.VERSION_WARNING = 'Movie (436) is incompatible with sifr.js (%s). Use movie of %s.<br><strong>Movie (436) is incompatible with sifr.js (%s). Use movie of %s.</strong><br><em>Movie (436) is incompatible with sifr.js (%s). Use movie of %s.</em><br><strong><em>Movie (436) is incompatible with sifr.js (%s). Use movie of %s.</em></strong>';
+        _global.sIFR.CSS_ROOT_CLASS = 'sIFR-root';
+        _global.sIFR.DEFAULT_WIDTH = 300;
+        _global.sIFR.DEFAULT_HEIGHT = 100;
+        _global.sIFR.DEFAULT_ANTI_ALIAS_TYPE = 'advanced';
+        _global.sIFR.MARGIN_LEFT = -3;
+        _global.sIFR.PADDING_BOTTOM = 5;
+        _global.sIFR.LEADING_REMAINDER = 2;
+        _global.sIFR.MIN_FONT_SIZE = 6;
+        _global.sIFR.MAX_FONT_SIZE = 126;
+        _global.sIFR.MIN_HEIGHT = 10;
+        _global.sIFR.ALIASING_MAX_FONT_SIZE = 48;
+        _global.sIFR.VERSION = '436';
+        _global.sIFR.styles = new SifrStyleSheet();
+        _global.sIFR.fromLocal = true;
+        _global.sIFR.domains = [];
+        _global.sIFR.defaultKerning = true;
+        _global.sIFR.defaultSharpness = 0;
+        _global.sIFR.defaultThickness = 0;
+        _global.sIFR.defaultOpacity = -1;
+        _global.sIFR.defaultBlendMode = -1;
+        _global.sIFR.enforcedGridFitType = null;
+        _global.sIFR.preserveAntiAlias = false;
+        _global.sIFR.conditionalAntiAlias = true;
+        _global.sIFR.antiAliasType = null;
+        _global.sIFR.filters = [];
+        _global.sIFR.filterMap = {'DisplacementMapFilter': flash.filters.DisplacementMapFilter, 'ColorMatrixFilter': flash.filters.ColorMatrixFilter, 'ConvolutionFilter': flash.filters.ConvolutionFilter, 'GradientBevelFilter': flash.filters.GradientBevelFilter, 'GradientGlowFilter': flash.filters.GradientGlowFilter, 'BevelFilter': flash.filters.BevelFilter, 'GlowFilter': flash.filters.GlowFilter, 'BlurFilter': flash.filters.BlurFilter, 'DropShadowFilter': flash.filters.DropShadowFilter};
+        _global.sIFR.menuItems = [];
+        v1.firstResize = true;
+      }
+    #endinitclip
+  }
+
+  movieClip 20482 __Packages.Options {
+
+    #initclip
+      if (!Options) {
+        _global.Options = function () {};
+
+        var v1 = _global.Options.prototype;
+        _global.Options.apply = function () {
+          sIFR.domains = ['*'];
+        };
+
+        ASSetPropFlags(v1, null, 1);
+      }
+    #endinitclip
+  }
+}

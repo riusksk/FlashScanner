@@ -1,0 +1,93 @@
+var snd=70
+if(_root.default_volume==undefined)
+{
+   xx=snd;
+}
+else
+{
+   xx=_root.default_volume;
+}
+xx=xx*70/100+21;
+if(xx>91)
+{
+   btn._x=91;
+}
+else
+{
+   btn._x=xx;
+}
+bar.bg._width=btn._x-21;
+snd=Math.ceil((btn._x-21)*100/71);
+volume_mc.volume_txt.text=snd;
+my_sound.setVolume(snd);
+var ctrl=1
+var info=new Array()
+my_sound=new Sound();
+my_sound.setVolume(snd);
+btn.onPress=function()
+{
+   startDrag(btn,0,21,5,92,5)
+   bar.onEnterFrame=function()
+   {
+         this.bg._width=btn._x-21;
+         snd=Math.ceil((btn._x-21)*100/71);
+         volume_mc.volume_txt.text=snd;
+         my_sound.setVolume(snd);
+   };
+};
+register0=function()
+{
+   delete bar.onEnterFrame
+   stopDrag();
+};
+btn.onReleaseOutside=function()
+{
+   delete bar.onEnterFrame
+   stopDrag();
+};
+btn.onRelease=register0;
+bar.onPress=function()
+{
+   if(_xmouse>92)
+   {
+         btn._x=92;
+   }
+   else
+   {
+         btn._x=_xmouse-3;
+   }
+   this.bg._width=btn._x-21;
+   snd=Math.ceil((btn._x-21)*100/71);
+   volume_mc.volume_txt.text=snd;
+   my_sound.setVolume(snd);
+};
+icon_btn.onRelease=function()
+{
+   if(ctrl==1)
+   {
+         ctrl=0;
+         info.1=btn._x;
+         info.2=bar.bg._width;
+         info.3=snd;
+         icon_btn.gotoAndStop(2);
+         btn._x=21;
+         btn.enabled=false;
+         bar.enabled=false;
+         bar.bg._width=0;
+         volume_mc.volume_txt.text=0;
+         snd=0;
+         my_sound.setVolume(snd);
+   }
+   else
+   {
+         ctrl=1;
+         btn._x=info[1];
+         bar.bg._width=info[2];
+         snd=info[3];
+         icon_btn.gotoAndStop(1);
+         btn.enabled=true;
+         bar.enabled=true;
+         volume_mc.volume_txt.text=snd;
+         my_sound.setVolume(snd);
+   }
+};

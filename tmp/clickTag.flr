@@ -1,0 +1,81 @@
+movie 'tmp/clickTag.swf' {
+// flash 6, total frames: 95, frame rate: 18 fps, 714x90 px, compressed
+
+  movieClip 4 masks {
+
+    frame 11 {
+      stop();
+    }
+  }
+
+  movieClip 8  {
+  }
+
+  movieClip 18  {
+  }
+
+  button 21 {
+
+    on (release) {
+      getURL(clickTag, '_blank');
+    }
+
+    on (rollOver) {
+      pause = true;
+    }
+
+    on (rollOut) {
+      pause = false;
+    }
+  }
+
+  frame 40 {
+    endtime = getTimer() + 2000;
+  }
+
+  frame 42 {
+    if (getTimer() < endtime) {
+      prevFrame();
+      play();
+    }
+  }
+
+  movieClip 44  {
+  }
+
+  movieClip 45  {
+  }
+
+  frame 58 {
+    endtime = getTimer() + 2000;
+  }
+
+  frame 60 {
+    if (getTimer() < endtime) {
+      prevFrame();
+      play();
+    }
+  }
+
+  frame 74 {
+    endtime = getTimer() + 3000;
+  }
+
+  frame 76 {
+    if (getTimer() < endtime) {
+      prevFrame();
+      play();
+    }
+  }
+
+  frame 92 {
+    endtime = getTimer() + 3000;
+  }
+
+  frame 94 {
+    if (getTimer() < endtime) {
+      prevFrame();
+      play();
+    }
+  }
+}

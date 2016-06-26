@@ -1,0 +1,113 @@
+if(!_global.com)
+{
+   _global.com=new Object();
+}
+if(!_global.com.jeroenwijering)
+{
+   _global.com.jeroenwijering=new Object();
+}
+if(!_global.com.jeroenwijering.feeds)
+{
+   _global.com.jeroenwijering.feeds=new Object();
+}
+if(!_global.com.jeroenwijering.feeds.XSPFParser)
+{
+   register1=function()
+   {
+      super();
+   };
+   com.jeroenwijering.feeds.XSPFParser=function()
+   {
+      super();
+   };
+   com.jeroenwijering.feeds.XSPFParser extends com.jeroenwijering.feeds.AbstractParser
+   register2=register1.prototype;
+   register2.setElements=function()
+   {
+      this.elements=new Object();
+      this.elements.title="title";
+      this.elements.creator="author";
+      this.elements.info="link";
+      this.elements.image="image";
+      this.elements.identifier="id";
+      this.elements.album="category";
+   };
+   register2.parse=function(xml)
+   {
+      register9=new Array();
+      register7=xml.firstChild.firstChild;
+      while(!(register7==null))
+      {
+            if(register7.nodeName=="trackList")
+            {
+               register6=0;
+               while(register6<register7.childNodes.length)
+               {
+                  register2=new Object();
+                  register5=0;
+                  while(register5<register7.childNodes[register6].childNodes.length)
+                  {
+                     register3=register7.childNodes[register6].childNodes[register5];
+                     register4=register3.nodeName.toLowerCase();
+                     if(!(this.elements[register4]==undefined))
+                     {
+                        register2.this.elements[register4]=register3.firstChild.nodeValue;
+                     }
+                     else
+                     {
+                        if(register4=="location"&&!(register2.type=="flv"))
+                        {
+                           register2.file=register3.firstChild.nodeValue;
+                           register8=register2.file.substr(-3).toLowerCase();
+                           if(register2.file.substr(0,4)=="rtmp")
+                           {
+                              register2.type="rtmp";
+                           }
+                           else
+                           {
+                              if(!(this.mimetypes[register8]==undefined))
+                              {
+                                 register2.type=this.mimetypes[register8];
+                              }
+                           }
+                        }
+                        else
+                        {
+                           if(register4=="annotation")
+                           {
+                              register2.description=com.jeroenwijering.utils.StringMagic.stripTagsBreaks(register3.firstChild.nodeValue);
+                           }
+                           else
+                           {
+                              if(register4=="link"&&register3.attributes.rel=="captions")
+                              {
+                                 register2.captions=register3.firstChild.nodeValue;
+                              }
+                              else
+                              {
+                                 if(register4=="link"&&register3.attributes.rel=="audio")
+                                 {
+                                    register2.audio=register3.firstChild.nodeValue;
+                                 }
+                                 else
+                                 {
+                                    if(register4=="meta")
+                                    {
+                                       register2.register3.attributes.rel=register3.firstChild.nodeValue;
+                                    }
+                                 }
+                              }
+                           }
+                        }
+                     }
+                     register5=register5+1;
+                  }
+                  register9.push(register2);
+                  register6=register6+1;
+               }
+            }
+            register7=register7.nextSibling;
+      }
+      return register9;
+   };
+}

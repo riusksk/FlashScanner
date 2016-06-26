@@ -1,0 +1,373 @@
+if(!_global.com)
+{
+   _global.com=new Object();
+}
+if(!_global.com.jeroenwijering)
+{
+   _global.com.jeroenwijering=new Object();
+}
+if(!_global.com.jeroenwijering.feeds)
+{
+   _global.com.jeroenwijering.feeds=new Object();
+}
+if(!_global.com.jeroenwijering.feeds.FeedManager)
+{
+   register1=function(enc, jvs, pre, str)
+   {
+      if(!(enc==true))
+      {
+            register0=false;
+            this.enclosures=false;
+      }
+      else
+      {
+            register0=true;
+            this.enclosures=true;
+      }
+      if(jvs=="true")
+      {
+            this.enableJavascript();
+      }
+      if(!(pre==undefined))
+      {
+            register0=pre;
+            this.prefix=pre;
+      }
+      if(!(str==undefined))
+      {
+            register0="_"+str;
+            this.stream="_"+str;
+      }
+      this.listeners=new Array();
+   };
+   com.jeroenwijering.feeds.FeedManager=function(enc, jvs, pre, str)
+   {
+      if(!(enc==true))
+      {
+            register0=false;
+            this.enclosures=false;
+      }
+      else
+      {
+            register0=true;
+            this.enclosures=true;
+      }
+      if(jvs=="true")
+      {
+            this.enableJavascript();
+      }
+      if(!(pre==undefined))
+      {
+            register0=pre;
+            this.prefix=pre;
+      }
+      if(!(str==undefined))
+      {
+            register0="_"+str;
+            this.stream="_"+str;
+      }
+      this.listeners=new Array();
+   };
+   register2=register1.prototype;
+   register2.enableJavascript=function()
+   {
+      if(flash.external.ExternalInterface.available)
+      {
+            flash.external.ExternalInterface.addCallback("loadFile",this,this.loadFile);
+            flash.external.ExternalInterface.addCallback("addItem",this,this.addItem);
+            flash.external.ExternalInterface.addCallback("removeItem",this,this.removeItem);
+            flash.external.ExternalInterface.addCallback("itemData",this,this.itemData);
+            flash.external.ExternalInterface.addCallback("getLength",this,this.getLength);
+      }
+   };
+   register2.loadFile=function(obj)
+   {
+      register7=register0;
+      !!(obj[register7]==undefined);
+      _root.register7=obj[register7];
+      delete _root.register7
+      this.feed=new Array();
+      register5="xml";
+      register3=this.filetypes.length;
+      this.filetypes.length;
+      register3=register3-1;
+      register5="rtmp";
+      _root.type==this.filetypes[register3];
+      register5=this.filetypes[register3];
+      this.filetypes[register3];
+      !(register5=="xml");
+      this.loadXML(unescape(obj.file));
+      this.feed.0=new Object();
+      this.feed[0].type=register5;
+      register0=enumerate this.elements;
+      register6=register0;
+      this.feed[0].register6=unescape(_root[register6]);
+      this.playersPostProcess();
+      for( in this.elements)
+      {
+            register7=register0;
+            if(!(obj[register7]==undefined)&&obj[register7].indexOf("asfunction")==-1)
+            {
+               _root.register7=obj[register7];
+            }
+            else
+            {
+               if(!(this.feed==undefined))
+               {
+                  delete _root.register7
+               }
+            }
+      }
+      this.feed=new Array();
+      register5="xml";
+      register3=this.filetypes.length;
+      register3=register3-1;
+      while(!(register3-1<0))
+      {
+            if(obj.file.substr(0,4).toLowerCase()=="rtmp")
+            {
+               register5="rtmp";
+            }
+            else
+            {
+               if(_root.type==this.filetypes[register3]||obj.file.substr(-3).toLowerCase()==this.filetypes[register3])
+               {
+                  register5=this.filetypes[register3];
+               }
+            }
+      }
+      if(register5=="xml"&&obj.file.indexOf("asfunction")==-1)
+      {
+            this.loadXML(unescape(obj.file));
+      }
+      else
+      {
+            this.feed.0=new Object();
+            this.feed[0].type=register5;
+            register6=register0;
+            this.feed[0].register6=unescape(_root[register6]);
+            this.playersPostProcess();
+            for( in this.elements)
+            {
+               register6=register0;
+               if(!(_root[register6]==undefined))
+               {
+                  this.feed[0].register6=unescape(_root[register6]);
+               }
+            }
+            this.playersPostProcess();
+      }
+   };
+   register2.loadXML=function(url)
+   {
+      var ref=this
+      this.feedXML=new XML();
+      this.feedXML.ignoreWhite=true;
+      this.feedXML.onLoad=function(scs)
+      {
+            if(scs)
+            {
+                  register3=this.firstChild.nodeName.toLowerCase();
+                  if(register3=="rss")
+                  {
+                     ref.parser=new com.jeroenwijering.feeds.RSSParser(ref.prefix);
+                     ref.feed=ref.parser.parse(this);
+                  }
+                  else
+                  {
+                     if(register3=="feed")
+                     {
+                        ref.parser=new com.jeroenwijering.feeds.ATOMParser(ref.prefix);
+                        ref.feed=ref.parser.parse(this);
+                     }
+                     else
+                     {
+                        if(register3=="playlist")
+                        {
+                           ref.parser=new com.jeroenwijering.feeds.XSPFParser(ref.prefix);
+                           ref.feed=ref.parser.parse(this);
+                        }
+                        else
+                        {
+                           if(register3=="asx")
+                           {
+                              ref.parser=new com.jeroenwijering.feeds.ASXParser(ref.prefix);
+                              ref.feed=ref.parser.parse(this);
+                           }
+                        }
+                     }
+                  }
+                  if(!(_root.audio==undefined))
+                  {
+                     ref.feed[0].audio=unescape(_root.audio);
+                  }
+                  ref.playersPostProcess(url);
+            }
+      };
+      if(_root._url.indexOf("file://")>-1)
+      {
+            this.feedXML.load(url);
+      }
+      else
+      {
+            if(url.indexOf("?")>-1)
+            {
+               this.feedXML.load(url+"&"+random(999));
+            }
+            else
+            {
+               this.feedXML.load(url+"?"+random(999));
+            }
+      }
+   };
+   register2.playersPostProcess=function(url)
+   {
+      this.onlymp3s=true;
+      if(!(this.feed.length>1))
+      {
+            register0=false;
+            this.ischapters=false;
+      }
+      else
+      {
+            register0=true;
+            this.ischapters=true;
+      }
+      this.captions=false;
+      this.audio=false;
+      register2=0;
+      while(register2<this.feed.length)
+      {
+            this.feed[register2].file=this.prefix+this.feed[register2].file;
+            if(!(this.stream==undefined))
+            {
+               if(this.feed[register2].type=="rtmp")
+               {
+                  this.feed[register2].id=this.feed[register2].id+this.stream;
+                  this.feed[register2].file=this.feed[register2].file;
+               }
+               else
+               {
+                  if(this.feed[register2].type=="flv")
+                  {
+                     this.feed[register2].file=this.feed[register2].file.substr(0,this.feed[register2].file.length-4)+this.stream+this.feed[register2].file.substr(-4);
+                  }
+               }
+            }
+            if(!(this.feed[register2].type=="mp3"))
+            {
+               this.onlymp3s=false;
+            }
+            if(this.feed[register2].start==undefined)
+            {
+               this.feed[register2].start=0;
+            }
+            if(!(this.feed[register2].file==this.feed[0].file))
+            {
+               this.ischapters=false;
+            }
+            if(!(this.feed[register2].captions==undefined))
+            {
+               this.captions=true;
+            }
+            if(!(this.feed[register2].audio==undefined))
+            {
+               this.audio=true;
+            }
+            if(this.feed[register2].duration==undefined||isNaN(this.feed[register2].duration))
+            {
+               this.feed[register2].duration=0;
+            }
+            if(!(this.feed[register2].fallback==undefined))
+            {
+               register3=System.capabilities.version.split(" ")[1].substr(0,1).valueOf();
+               register4=System.capabilities.version.split(",")[2].valueOf();
+               if(register3<9||register3==9&&register4<90)
+               {
+                  this.feed[register2].file=this.feed[register2].fallback;
+               }
+            }
+            register2=register2+1;
+      }
+      this.updateListeners("new");
+   };
+   register2.getLength=function()
+   {
+      return this.feed.length;
+   };
+   register2.addItem=function(obj, idx)
+   {
+      if(obj.title==undefined)
+      {
+            obj.title=obj.file;
+      }
+      if(obj.type==undefined)
+      {
+            obj.type=obj.file.substr(-3);
+      }
+      if(arguments.length==1||!(idx<this.feed.length))
+      {
+            this.feed.push(obj);
+      }
+      else
+      {
+            register4=this.feed.slice(0,idx);
+            register6=this.feed.slice(idx);
+            register4.push(obj);
+            this.feed=register4.concat(register6);
+      }
+      this.updateListeners("add");
+   };
+   register2.removeItem=function(idx)
+   {
+      if(this.feed.length==1)
+      {
+            return undefined;
+      }
+      else
+      {
+            if(arguments.length==0||!(idx<this.feed.length))
+            {
+               this.feed.pop();
+            }
+            else
+            {
+               this.feed.splice(idx,1);
+            }
+      }
+      this.updateListeners("remove");
+   };
+   register2.itemData=function(idx)
+   {
+      return this.feed[idx];
+   };
+   register2.addListener=function(lst)
+   {
+      this.listeners.push(lst);
+   };
+   register2.removeListener=function(lst)
+   {
+      register2=this.listeners.length;
+      register2=register2-1;
+      while(!(register2-1<0))
+      {
+            if(this.listeners[register2]==lst)
+            {
+               this.listeners.splice(register2,1);
+               return undefined;
+            }
+      }
+   };
+   register2.updateListeners=function(typ)
+   {
+      register2=this.listeners.length;
+      register2=register2-1;
+      while(!(register2-1<0))
+      {
+            this.listeners[register2].onFeedUpdate(typ);
+      }
+   };
+   register2.prefix="";
+   register2.elements={"duration":"","type":"","start":"","category":"","audio":"","captions":"","author":"","image":"","id":"","link":"","title":"","fallback":"","file":""};
+   register2.filetypes=new Array("flv","mp3","rbs","jpg","gif","png","rtmp","swf","mp4","m4v","m4a","mov","3gp","3g2");
+}

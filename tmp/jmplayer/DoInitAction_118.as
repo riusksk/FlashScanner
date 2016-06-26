@@ -1,0 +1,339 @@
+if(!_global.com)
+{
+   _global.com=new Object();
+}
+if(!_global.com.jeroenwijering)
+{
+   _global.com.jeroenwijering=new Object();
+}
+if(!_global.com.jeroenwijering.players)
+{
+   _global.com.jeroenwijering.players=new Object();
+}
+if(!_global.com.jeroenwijering.players.DisplayView)
+{
+   register1=function(ctr, cfg, fed)
+   {
+      super(ctr,cfg,fed);
+      Stage.addListener(this);
+      this.itemSize=new Array(this.config.displaywidth,this.config.displayheight);
+      this.thumbSize=new Array(this.config.displaywidth,this.config.displayheight);
+      var ref=this
+      var tgt=this.config.clip
+      this.imageLoader=new com.jeroenwijering.utils.ImageLoader(tgt.display.thumb);
+      this.imageLoader.onLoadFinished=function()
+      {
+            ref.thumbSize=new Array(this.targetClip._width,this.targetClip._height);
+            ref.scaleClip(tgt.display.thumb,this.targetClip._width,this.targetClip._height);
+      };
+      this.startPos=new Array(tgt._x,tgt._y);
+      this.setColorsClicks();
+      this.setDimensions();
+   };
+   com.jeroenwijering.players.DisplayView=function(ctr, cfg, fed)
+   {
+      super(ctr,cfg,fed);
+      Stage.addListener(this);
+      this.itemSize=new Array(this.config.displaywidth,this.config.displayheight);
+      this.thumbSize=new Array(this.config.displaywidth,this.config.displayheight);
+      var ref=this
+      var tgt=this.config.clip
+      this.imageLoader=new com.jeroenwijering.utils.ImageLoader(tgt.display.thumb);
+      this.imageLoader.onLoadFinished=function()
+      {
+            ref.thumbSize=new Array(this.targetClip._width,this.targetClip._height);
+            ref.scaleClip(tgt.display.thumb,this.targetClip._width,this.targetClip._height);
+      };
+      this.startPos=new Array(tgt._x,tgt._y);
+      this.setColorsClicks();
+      this.setDimensions();
+   };
+   com.jeroenwijering.players.DisplayView extends com.jeroenwijering.players.AbstractView
+   register2=register1.prototype;
+   register2.setColorsClicks=function()
+   {
+      var ref=this
+      var tgt=this.config.clip.back
+      tgt.col=new Color(tgt);
+      tgt.col.setRGB(this.config.backcolor);
+      tgt=this.config.clip.display;
+      tgt.col=new Color(tgt.back);
+      tgt.col.setRGB(this.config.screencolor);
+      tgt.setMask(this.config.clip.mask);
+      if(this.config.showicons=="false")
+      {
+            tgt.playicon._visible=false;
+            tgt.muteicon._visible=false;
+      }
+      tgt.activity._visible=false;
+      tgt.back.tabEnabled=false;
+      if(this.config.autostart=="muted")
+      {
+            tgt.back.onRelease=function()
+            {
+               ref.sendEvent("volume",80);
+               ref.firstClick();
+            };
+      }
+      else
+      {
+            if(this.config.autostart=="false")
+            {
+               tgt.muteicon._visible=false;
+               tgt.back.onRelease=function()
+               {
+                  ref.sendEvent("playpause");
+                  ref.firstClick();
+               };
+            }
+            else
+            {
+               ref.firstClick();
+            }
+      }
+      if(!(this.config.logo=="undefined"))
+      {
+            register2=new com.jeroenwijering.utils.ImageLoader(tgt.logo,"none");
+            register2.onLoadFinished=function()
+            {
+               tgt.logo._x=ref.config.displaywidth-tgt.logo._width-10;
+               tgt.logo._y=10;
+            };
+            register2.loadImage(this.config.logo);
+            tgt.logo.onRelease=function()
+            {
+               ref.sendEvent("getlink",ref.currentItem);
+            };
+      }
+   };
+   register2.setDimensions=function()
+   {
+      register2=this.config.clip.back;
+      if(Stage.displayState=="fullScreen")
+      {
+            register0=0;
+            this.config.clip._y=0;
+            this.config.clip._x=register0;
+            register2._width=Stage.width;
+            register2._height=Stage.height;
+      }
+      else
+      {
+            this.config.clip._x=this.startPos[0];
+            this.config.clip._y=this.startPos[1];
+            register2._width=this.config.width;
+            register2._height=this.config.height;
+            if(!(this.config.displayheight<this.config.height-this.config.controlbar))
+            {
+               register2._height=register2._height-1;
+            }
+      }
+      register2=this.config.clip.display;
+      this.scaleClip(register2.thumb,this.thumbSize[0],this.thumbSize[1]);
+      this.scaleClip(register2.image,this.itemSize[0],this.itemSize[1]);
+      this.scaleClip(register2.video,this.itemSize[0],this.itemSize[1]);
+      if(Stage.displayState=="fullScreen")
+      {
+            register0=Stage.width;
+            register2.back._width=Stage.width;
+            this.config.clip.mask._width=register0;
+            register0=Stage.height;
+            register2.back._height=Stage.height;
+            this.config.clip.mask._height=register0;
+      }
+      else
+      {
+            register0=this.config.displaywidth;
+            register2.back._width=this.config.displaywidth;
+            this.config.clip.mask._width=register0;
+            register0=this.config.displayheight;
+            register2.back._height=this.config.displayheight;
+            this.config.clip.mask._height=register0;
+      }
+      register0=Math.round(register2.back._width/2);
+      register2.muteicon._x=Math.round(register2.back._width/2);
+      register0=register0;
+      register2.activity._x=register0;
+      register2.playicon._x=register0;
+      register0=Math.round(register2.back._height/2);
+      register2.muteicon._y=Math.round(register2.back._height/2);
+      register0=register0;
+      register2.activity._y=register0;
+      register2.playicon._y=register0;
+      if(Stage.displayState=="fullScreen")
+      {
+            register0=200;
+            register2.logo._yscale=200;
+            register0=register0;
+            register2.logo._xscale=register0;
+            register0=register0;
+            register2.activity._yscale=register0;
+            register0=register0;
+            register2.activity._xscale=register0;
+            register0=register0;
+            register2.muteicon._yscale=register0;
+            register0=register0;
+            register2.muteicon._xscale=register0;
+            register0=register0;
+            register2.playicon._yscale=register0;
+            register2.playicon._xscale=register0;
+            register2.logo._x=Stage.width-register2.logo._width-20;
+            register2.logo._y=20;
+      }
+      else
+      {
+            register0=100;
+            register2.logo._yscale=100;
+            register0=register0;
+            register2.logo._xscale=register0;
+            register0=register0;
+            register2.activity._yscale=register0;
+            register0=register0;
+            register2.activity._xscale=register0;
+            register0=register0;
+            register2.muteicon._yscale=register0;
+            register0=register0;
+            register2.muteicon._xscale=register0;
+            register0=register0;
+            register2.playicon._yscale=register0;
+            register2.playicon._xscale=register0;
+            if(register2.logo._height>1)
+            {
+               register2.logo._x=this.config.displaywidth-register2.logo._width-10;
+               register2.logo._y=10;
+            }
+      }
+   };
+   register2.setState=function(stt)
+   {
+      register2=this.config.clip.display;
+      switch(stt)
+      {
+            case 0:
+               if(this.config.linkfromdisplay=="false"&&this.config.showicons=="true")
+               {
+                  register2.playicon._visible=true;
+               }
+               register2.activity._visible=false;
+               break;
+            case 1:
+               register2.playicon._visible=false;
+               if(this.config.showicons=="true")
+               {
+                  register2.activity._visible=true;
+               }
+               break;
+            case 2:
+               register2.playicon._visible=false;
+               register2.activity._visible=false;
+               break;
+      }
+   };
+   register2.setSize=function(wid, hei)
+   {
+      this.itemSize=new Array(wid,hei);
+      register2=this.config.clip.display;
+      this.scaleClip(register2.image,this.itemSize[0],this.itemSize[1]);
+      this.scaleClip(register2.video,this.itemSize[0],this.itemSize[1]);
+   };
+   register2.scaleClip=function(tgt, wid, hei)
+   {
+      register9=tgt.mc._currentframe;
+      tgt.mc.gotoAndStop(1);
+      register6=this.config.displaywidth;
+      register5=this.config.displayheight;
+      if(Stage.displayState=="fullScreen")
+      {
+            register6=Stage.width;
+            register5=Stage.height;
+      }
+      register3=register6/wid;
+      register4=register5/hei;
+      register10=Math.max(register3,register4);
+      if(Math.abs(register3-register4)/register10<0.1&&!(this.config.overstretch=="none")||this.config.overstretch=="fit")
+      {
+            tgt._width=register6;
+            tgt._height=register5;
+      }
+      else
+      {
+            if(register3<register4&&this.config.overstretch=="false"||register4<register3&&this.config.overstretch=="true")
+            {
+               tgt._width=wid*register3;
+               tgt._height=hei*register3;
+            }
+            else
+            {
+               if(this.config.overstretch=="none")
+               {
+                  tgt._width=wid;
+                  tgt._height=hei;
+               }
+               else
+               {
+                  tgt._width=wid*register4;
+                  tgt._height=hei*register4;
+               }
+            }
+      }
+      tgt._x=register6/2-tgt._width/2;
+      tgt._y=register5/2-tgt._height/2;
+      tgt.mc.gotoAndPlay(register9);
+   };
+   register2.setItem=function(idx)
+   {
+      this.currentItem=idx;
+      register2=this.config.clip.display;
+      if(this.feeder.feed[idx].image=="undefined")
+      {
+            register2.thumb.clear();
+            register2.thumb._visible=false;
+      }
+      else
+      {
+            this.imageLoader.loadImage(this.feeder.feed[idx].image);
+            register2.thumb._visible=true;
+      }
+   };
+   register2.onResize=function()
+   {
+      if(!(this.config.displayheight<this.config.height))
+      {
+            register0=Stage.height;
+            this.config.displayheight=Stage.height;
+            this.config.height=register0;
+            register0=Stage.width;
+            this.config.displaywidth=Stage.width;
+            this.config.width=register0;
+      }
+      this.setDimensions();
+   };
+   register2.onFullScreen=function(fs)
+   {
+      if(fs==false)
+      {
+            this.setDimensions();
+      }
+   };
+   register2.firstClick=function()
+   {
+      var ref=this
+      register2=this.config.clip.display;
+      register2.playicon._visible=false;
+      register2.muteicon._visible=false;
+      if(this.config.linkfromdisplay=="true")
+      {
+            register2.back.onRelease=function()
+            {
+               ref.sendEvent("getlink",ref.currentItem);
+            };
+      }
+      else
+      {
+            register2.back.onRelease=function()
+            {
+               ref.sendEvent("playpause",1);
+            };
+      }
+   };
+}

@@ -1,0 +1,91 @@
+if(!_global.com)
+{
+   _global.com=new Object();
+}
+if(!_global.com.jeroenwijering)
+{
+   _global.com.jeroenwijering=new Object();
+}
+if(!_global.com.jeroenwijering.players)
+{
+   _global.com.jeroenwijering.players=new Object();
+}
+if(!_global.com.jeroenwijering.players.InputView)
+{
+   register1=function(ctr, cfg, fed)
+   {
+      super(ctr,cfg,fed);
+      Key.addListener(this);
+   };
+   com.jeroenwijering.players.InputView=function(ctr, cfg, fed)
+   {
+      super(ctr,cfg,fed);
+      Key.addListener(this);
+   };
+   com.jeroenwijering.players.InputView extends com.jeroenwijering.players.AbstractView
+   register2=register1.prototype;
+   register2.setTime=function(elp, rem)
+   {
+      this.currentTime=elp;
+   };
+   register2.setVolume=function(vol)
+   {
+      this.currentVolume=vol;
+   };
+   register2.onKeyDown=function()
+   {
+      if(Key.getCode()==32)
+      {
+            this.sendEvent("playpause");
+      }
+      else
+      {
+            if(Key.getCode()==37)
+            {
+               if(this.feeder.feed.length==1)
+               {
+                  this.sendEvent("scrub",this.currentTime-15);
+               }
+               else
+               {
+                  this.sendEvent("prev");
+               }
+            }
+            else
+            {
+               if(Key.getCode()==39)
+               {
+                  if(this.feeder.feed.length==1)
+                  {
+                     this.sendEvent("scrub",this.currentTime+15);
+                  }
+                  else
+                  {
+                     this.sendEvent("next");
+                  }
+               }
+               else
+               {
+                  if(Key.getCode()==38)
+                  {
+                     this.sendEvent("volume",this.currentVolume+10);
+                  }
+                  else
+                  {
+                     if(Key.getCode()==40)
+                     {
+                        this.sendEvent("volume",this.currentVolume-10);
+                     }
+                     else
+                     {
+                        if(Key.getCode()==77)
+                        {
+                           this.sendEvent("volume",0);
+                        }
+                     }
+                  }
+               }
+            }
+      }
+   };
+}

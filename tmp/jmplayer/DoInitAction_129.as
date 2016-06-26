@@ -1,0 +1,154 @@
+if(!_global.com)
+{
+   _global.com=new Object();
+}
+if(!_global.com.jeroenwijering)
+{
+   _global.com.jeroenwijering=new Object();
+}
+if(!_global.com.jeroenwijering.players)
+{
+   _global.com.jeroenwijering.players=new Object();
+}
+if(!_global.com.jeroenwijering.players.AudioView)
+{
+   register1=function(ctr, cfg, fed, snc)
+   {
+      super(ctr,cfg,fed);
+      this.sync=snc;
+      var ref=this
+      this.audioClip=this.config.clip.createEmptyMovieClip("audio",this.config.clip.getNextHighestDepth());
+      this.audioClip.setStart=function()
+      {
+            if(ref.stopTime==undefined&&ref.sync==false)
+            {
+                  ref.audioObject.loadSound(ref.feeder.feed[0].audio,true);
+                  ref.audioObject.setVolume(ref.config.volume.valueOf());
+                  ref.audioObject.start(0);
+            }
+            else
+            {
+                  if(ref.sync==false)
+                  {
+                     ref.audioObject.start(ref.stopTime);
+                  }
+                  else
+                  {
+                     if(ref.currentState==2)
+                     {
+                        ref.audioObject.start(ref.currentTime);
+                     }
+                  }
+            }
+      };
+      this.audioClip.setStop=function()
+      {
+            ref.audioObject.stop();
+            ref.stopTime=ref.audioObject.position/1000;
+      };
+      this.audioObject=new Sound(this.audioClip);
+      if(this.config.useaudio=="true"&&this.sync==false)
+      {
+            this.audioClip.setStart();
+      }
+      if(this.sync==false)
+      {
+            this.audioObject.onSoundComplete=function()
+            {
+               this.start();
+            };
+      }
+   };
+   com.jeroenwijering.players.AudioView=function(ctr, cfg, fed, snc)
+   {
+      super(ctr,cfg,fed);
+      this.sync=snc;
+      var ref=this
+      this.audioClip=this.config.clip.createEmptyMovieClip("audio",this.config.clip.getNextHighestDepth());
+      this.audioClip.setStart=function()
+      {
+            if(ref.stopTime==undefined&&ref.sync==false)
+            {
+                  ref.audioObject.loadSound(ref.feeder.feed[0].audio,true);
+                  ref.audioObject.setVolume(ref.config.volume.valueOf());
+                  ref.audioObject.start(0);
+            }
+            else
+            {
+                  if(ref.sync==false)
+                  {
+                     ref.audioObject.start(ref.stopTime);
+                  }
+                  else
+                  {
+                     if(ref.currentState==2)
+                     {
+                        ref.audioObject.start(ref.currentTime);
+                     }
+                  }
+            }
+      };
+      this.audioClip.setStop=function()
+      {
+            ref.audioObject.stop();
+            ref.stopTime=ref.audioObject.position/1000;
+      };
+      this.audioObject=new Sound(this.audioClip);
+      if(this.config.useaudio=="true"&&this.sync==false)
+      {
+            this.audioClip.setStart();
+      }
+      if(this.sync==false)
+      {
+            this.audioObject.onSoundComplete=function()
+            {
+               this.start();
+            };
+      }
+   };
+   com.jeroenwijering.players.AudioView extends com.jeroenwijering.players.AbstractView
+   register2=register1.prototype;
+   register2.setItem=function(idx)
+   {
+      this.currentItem=idx;
+   };
+   register2.setState=function(stt)
+   {
+      this.currentState=stt;
+      if(this.sync==false)
+      {
+            return undefined;
+      }
+      if(stt==2&&this.config.useaudio=="true")
+      {
+            this.audioObject.start(this.currentTime);
+      }
+      else
+      {
+            this.audioObject.stop();
+      }
+   };
+   register2.setTime=function(elp, rem)
+   {
+      if(this.sync==false)
+      {
+            return undefined;
+      }
+      if(Math.abs(elp-this.currentTime)>1)
+      {
+            this.currentTime=elp;
+            this.audioTime=this.audioObject.position/1000;
+            if(Math.abs(this.currentTime-this.audioTime)>1&&this.config.useaudio=="true")
+            {
+               this.audioObject.start(this.currentTime);
+            }
+      }
+      if(!(this.isLoaded==this.feeder.feed[this.currentItem].audio))
+      {
+            this.isLoaded=this.feeder.feed[this.currentItem].audio;
+            this.audioObject.loadSound(this.isLoaded,true);
+            this.audioObject.setVolume(this.config.volume.valueOf());
+      }
+   };
+   register2.currentTime=0;
+}

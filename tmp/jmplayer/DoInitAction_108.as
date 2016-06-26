@@ -1,0 +1,95 @@
+if(!_global.com)
+{
+   _global.com=new Object();
+}
+if(!_global.com.jeroenwijering)
+{
+   _global.com.jeroenwijering=new Object();
+}
+if(!_global.com.jeroenwijering.feeds)
+{
+   _global.com.jeroenwijering.feeds=new Object();
+}
+if(!_global.com.jeroenwijering.feeds.ASXParser)
+{
+   register1=function()
+   {
+      super();
+   };
+   com.jeroenwijering.feeds.ASXParser=function()
+   {
+      super();
+   };
+   com.jeroenwijering.feeds.ASXParser extends com.jeroenwijering.feeds.AbstractParser
+   register2=register1.prototype;
+   register2.setElements=function()
+   {
+      this.elements=new Object();
+      this.elements.title="title";
+      this.elements.author="author";
+      this.elements.abstract="description";
+   };
+   register2.parse=function(xml)
+   {
+      register8=new Array();
+      register6=xml.firstChild.firstChild;
+      while(!(register6==null))
+      {
+            if(register6.nodeName.toLowerCase()=="entry")
+            {
+               register3=new Object();
+               register5=0;
+               while(register5<register6.childNodes.length)
+               {
+                  register2=register6.childNodes[register5];
+                  register4=register2.nodeName.toLowerCase();
+                  if(!(this.elements[register4]==undefined))
+                  {
+                     register3.this.elements[register4]=register2.firstChild.nodeValue;
+                  }
+                  else
+                  {
+                     if(register4=="moreinfo")
+                     {
+                        register3.link=register2.attributes.href;
+                     }
+                     else
+                     {
+                        if(register4=="duration")
+                        {
+                           register3.duration=com.jeroenwijering.utils.StringMagic.toSeconds(register2.attributes.value);
+                        }
+                        else
+                        {
+                           if(register4=="ref")
+                           {
+                              register3.file=register2.attributes.href;
+                              register7=register2.attributes.href.substr(-3);
+                              if(!(this.mimetypes[register7]==undefined))
+                              {
+                                 register3.type=this.mimetypes[register7];
+                              }
+                              if(register3.file.substr(0,4)=="rtmp")
+                              {
+                                 register3.type="rtmp";
+                              }
+                           }
+                           else
+                           {
+                              if(register4=="param")
+                              {
+                                 register3.register2.attributes.name=register2.attributes.value;
+                              }
+                           }
+                        }
+                     }
+                  }
+                  register5=register5+1;
+               }
+               register8.push(register3);
+            }
+            register6=register6.nextSibling;
+      }
+      return register8;
+   };
+}

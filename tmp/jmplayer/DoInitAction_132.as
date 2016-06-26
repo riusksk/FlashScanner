@@ -1,0 +1,168 @@
+if(!_global.com)
+{
+   _global.com=new Object();
+}
+if(!_global.com.jeroenwijering)
+{
+   _global.com.jeroenwijering=new Object();
+}
+if(!_global.com.jeroenwijering.players)
+{
+   _global.com.jeroenwijering.players=new Object();
+}
+if(!_global.com.jeroenwijering.players.MP3Model)
+{
+   register1=function(vws, ctr, cfg, fed, scl)
+   {
+      super(vws,ctr,cfg,fed);
+      this.soundClip=scl;
+   };
+   com.jeroenwijering.players.MP3Model=function(vws, ctr, cfg, fed, scl)
+   {
+      super(vws,ctr,cfg,fed);
+      this.soundClip=scl;
+   };
+   com.jeroenwijering.players.MP3Model extends com.jeroenwijering.players.AbstractModel
+   register2=register1.prototype;
+   register2.setStart=function(pos)
+   {
+      if(pos<1)
+      {
+            pos=0;
+      }
+      else
+      {
+            if(pos>this.feeder.feed[this.currentItem].duration-1)
+            {
+               pos=this.feeder.feed[this.currentItem].duration-1;
+            }
+      }
+      clearInterval(this.positionInterval);
+      if(!(this.feeder.feed[this.currentItem].file==this.currentURL))
+      {
+            var ref=this
+            this.currentURL=this.feeder.feed[this.currentItem].file;
+            this.soundObject=new Sound(this.soundClip);
+            this.soundObject.onSoundComplete=function()
+            {
+               ref.currentState=3;
+               ref.sendUpdate("state",3);
+               ref.sendCompleteEvent();
+            };
+            this.soundObject.onLoad=function(scs)
+            {
+               if(scs==false)
+               {
+                     ref.currentState=3;
+                     ref.sendUpdate("state",3);
+                     ref.sendCompleteEvent();
+               }
+            };
+            this.soundObject.loadSound(this.currentURL,true);
+            this.soundObject.setVolume(this.currentVolume);
+            this.sendUpdate("load",0);
+            this.loadedInterval=setInterval(this,"updateLoaded",100);
+      }
+      if(!(pos==undefined))
+      {
+            this.currentPosition=pos;
+            if(pos==0)
+            {
+               this.sendUpdate("time",0,this.feeder.feed[this.currentItem].duration);
+            }
+      }
+      this.soundObject.start(this.currentPosition);
+      this.updatePosition();
+      this.sendUpdate("size",0,0);
+      this.positionInterval=setInterval(this,"updatePosition",100);
+   };
+   register2.updateLoaded=function()
+   {
+      register2=Math.round(this.soundObject.getBytesLoaded()/this.soundObject.getBytesTotal()*100);
+      if(isNaN(register2))
+      {
+            this.currentLoaded=0;
+            this.sendUpdate("load",0);
+      }
+      else
+      {
+            if(!(register2==this.currentLoaded))
+            {
+               this.sendUpdate("load",register2);
+               this.currentLoaded=register2;
+            }
+            else
+            {
+               if(!(register2<100))
+               {
+                  clearInterval(this.loadedInterval);
+                  this.currentLoaded=100;
+                  this.sendUpdate("load",100);
+               }
+            }
+      }
+   };
+   register2.updatePosition=function()
+   {
+      register2=this.soundObject.position/1000;
+      this.feeder.feed[this.currentItem].duration=this.soundObject.duration/10*this.currentLoaded;
+      if(register2==this.currentPosition&&!(this.currentState==1))
+      {
+            this.currentState=1;
+            this.sendUpdate("state",1);
+      }
+      else
+      {
+            if(!(register2==this.currentPosition)&&!(this.currentState==2))
+            {
+               this.currentState=2;
+               this.sendUpdate("state",2);
+            }
+      }
+      if(!(register2==this.currentPosition))
+      {
+            this.currentPosition=register2;
+            this.sendUpdate("time",this.currentPosition,this.feeder.feed[this.currentItem].duration-this.currentPosition);
+      }
+   };
+   register2.setPause=function(pos)
+   {
+      if(pos<1)
+      {
+            pos=0;
+      }
+      else
+      {
+            if(pos>this.feeder.feed[this.currentItem].duration-1)
+            {
+               pos=this.feeder.feed[this.currentItem].duration-1;
+            }
+      }
+      this.soundObject.stop();
+      clearInterval(this.positionInterval);
+      this.currentState=0;
+      this.sendUpdate("state",0);
+      if(!(pos==undefined))
+      {
+            this.currentPosition=pos;
+            this.sendUpdate("time",this.currentPosition,this.feeder.feed[this.currentItem].duration-this.currentPosition);
+      }
+   };
+   register2.setStop=function()
+   {
+      this.soundObject.stop();
+      clearInterval(this.positionInterval);
+      clearInterval(this.loadedInterval);
+      delete this.currentURL
+      delete this.soundObject
+      this.currentLoaded=0;
+   };
+   register2.setVolume=function(vol)
+   {
+      super.setVolume(vol);
+      this.currentVolume=vol;
+      this.soundObject.setVolume(vol);
+   };
+   register2.mediatypes=new Array("mp3","rbs");
+   register2.currentLoaded=0;
+}

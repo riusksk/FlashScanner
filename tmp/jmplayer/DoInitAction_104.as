@@ -1,0 +1,212 @@
+if(!_global.com)
+{
+   _global.com=new Object();
+}
+if(!_global.com.jeroenwijering)
+{
+   _global.com.jeroenwijering=new Object();
+}
+if(!_global.com.jeroenwijering.feeds)
+{
+   _global.com.jeroenwijering.feeds=new Object();
+}
+if(!_global.com.jeroenwijering.feeds.RSSParser)
+{
+   register1=function()
+   {
+      super();
+   };
+   com.jeroenwijering.feeds.RSSParser=function()
+   {
+      super();
+   };
+   com.jeroenwijering.feeds.RSSParser extends com.jeroenwijering.feeds.AbstractParser
+   register2=register1.prototype;
+   register2.setElements=function()
+   {
+      this.elements=new Object();
+      this.elements.title="title";
+      this.elements.guid="id";
+      this.elements.category="category";
+      this.elements.link="link";
+      this.elements.geo:lat="latitude";
+      this.elements.geo:long="longitude";
+      this.elements.geo:city="city";
+   };
+   register2.parse=function(xml)
+   {
+      register13=new Array();
+      register9=xml.firstChild.firstChild.firstChild;
+      register12=undefined;
+      while(!(register9==null))
+      {
+            if(register9.nodeName.toLowerCase()=="item")
+            {
+               register2=new Object();
+               register10=0;
+               while(register10<register9.childNodes.length)
+               {
+                  register3=register9.childNodes[register10];
+                  register5=register3.nodeName.toLowerCase();
+                  if(!(this.elements[register5]==undefined))
+                  {
+                     register2.this.elements[register5]=register3.firstChild.nodeValue;
+                  }
+                  else
+                  {
+                     if(register5=="description")
+                     {
+                        register2.description=com.jeroenwijering.utils.StringMagic.stripTagsBreaks(register3.firstChild.nodeValue);
+                     }
+                     else
+                     {
+                        if(register5=="pubdate")
+                        {
+                           register2.date=this.rfc2Date(register3.firstChild.nodeValue);
+                        }
+                        else
+                        {
+                           if(register5=="dc:date")
+                           {
+                              register2.date=this.iso2Date(register3.firstChild.nodeValue);
+                           }
+                           else
+                           {
+                              if(register5=="media:credit")
+                              {
+                                 register2.author=register3.firstChild.nodeValue;
+                              }
+                              else
+                              {
+                                 if(register5=="media:thumbnail")
+                                 {
+                                    register2.image=register3.attributes.url;
+                                 }
+                                 else
+                                 {
+                                    if(register5=="itunes:image")
+                                    {
+                                       register2.image=register3.attributes.href;
+                                    }
+                                    else
+                                    {
+                                       if(register5=="georss:point")
+                                       {
+                                          register11=register3.firstChild.nodeValue.split(" ");
+                                          register2.latitude=register11[0].valueOf();
+                                          register2.longitude=register11[1].valueOf();
+                                       }
+                                       else
+                                       {
+                                          if(register5=="enclosure"||register5=="media:content")
+                                          {
+                                             register8=register3.attributes.type.toLowerCase();
+                                             if(!(this.mimetypes[register8]==undefined))
+                                             {
+                                                register2.type=this.mimetypes[register8];
+                                                register2.file=register3.attributes.url;
+                                                register2.duration=com.jeroenwijering.utils.StringMagic.toSeconds(register3.attributes.duration);
+                                                if(register2.file.substr(0,4)=="rtmp")
+                                                {
+                                                   register2.type="rtmp";
+                                                }
+                                                if(register3.childNodes[0].nodeName=="media:thumbnail")
+                                                {
+                                                   register2.image=register3.childNodes[0].attributes.url;
+                                                }
+                                             }
+                                             else
+                                             {
+                                                if(!(register2.type==undefined)&&register8=="video/x-flv")
+                                                {
+                                                   register2.fallback=register3.attributes.url;
+                                                }
+                                                else
+                                                {
+                                                   if(register8=="captions")
+                                                   {
+                                                      register2.captions=register3.attributes.url;
+                                                   }
+                                                   else
+                                                   {
+                                                      if(register8=="audio")
+                                                      {
+                                                         register2.audio=register3.attributes.url;
+                                                      }
+                                                   }
+                                                }
+                                             }
+                                          }
+                                          else
+                                          {
+                                             if(register5=="media:group")
+                                             {
+                                                register4=0;
+                                                while(register4<register3.childNodes.length)
+                                                {
+                                                   register6=register3.childNodes[register4].nodeName.toLowerCase();
+                                                   if(register6=="media:content")
+                                                   {
+                                                      register7=register3.childNodes[register4].attributes.type.toLowerCase();
+                                                      if(!(this.mimetypes[register7]==undefined)&&register2.type==undefined)
+                                                      {
+                                                         register2.file=register3.childNodes[register4].attributes.url;
+                                                         register2.duration=com.jeroenwijering.utils.StringMagic.toSeconds(register3.attributes.duration);
+                                                         register2.type=this.mimetypes[register7];
+                                                         if(register2.file.substr(0,4)=="rtmp")
+                                                         {
+                                                            register2.type="rtmp";
+                                                         }
+                                                      }
+                                                      if(!(register2.type==undefined)&&register7=="video/x-flv")
+                                                      {
+                                                         register2.fallback=register3.childNodes[register4].attributes.url;
+                                                      }
+                                                   }
+                                                   if(register6=="media:thumbnail")
+                                                   {
+                                                      register2.image=register3.childNodes[register4].attributes.url;
+                                                   }
+                                                   if(register6=="media:credit")
+                                                   {
+                                                      register2.author=register3.childNodes[register4].firstChild.nodeValue;
+                                                   }
+                                                   register4=register4+1;
+                                                }
+                                             }
+                                          }
+                                       }
+                                    }
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+                  register10=register10+1;
+               }
+               if(register2.image==undefined)
+               {
+                  if(register2.file.indexOf(".jpg")>0||register2.file.indexOf(".png")>0||register2.file.indexOf(".gif")>0)
+                  {
+                     register2.image=register2.file;
+                  }
+               }
+               if(register2.author==undefined)
+               {
+                  register2.author=register12;
+               }
+               register13.push(register2);
+            }
+            else
+            {
+               if(register9.nodeName=="title")
+               {
+                  register12=register9.firstChild.nodeValue;
+               }
+            }
+            register9=register9.nextSibling;
+      }
+      return register13;
+   };
+}

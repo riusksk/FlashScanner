@@ -1,0 +1,241 @@
+if(!_global.com)
+{
+   _global.com=new Object();
+}
+if(!_global.com.jeroenwijering)
+{
+   _global.com.jeroenwijering=new Object();
+}
+if(!_global.com.jeroenwijering.players)
+{
+   _global.com.jeroenwijering.players=new Object();
+}
+if(!_global.com.jeroenwijering.players.RecommendationsView)
+{
+   register1=function(ctr, cfg, fed)
+   {
+      super();
+      this.config=cfg;
+      this.feeder=fed;
+      this.clip=this.config.clip.recommendations;
+      var ref=this
+      this.parser=new com.jeroenwijering.utils.XMLParser();
+      this.parser.onComplete=function()
+      {
+            ref.loadRecommendations(this.output);
+      };
+      Stage.addListener(this);
+      this.setButtons();
+   };
+   com.jeroenwijering.players.RecommendationsView=function(ctr, cfg, fed)
+   {
+      super();
+      this.config=cfg;
+      this.feeder=fed;
+      this.clip=this.config.clip.recommendations;
+      var ref=this
+      this.parser=new com.jeroenwijering.utils.XMLParser();
+      this.parser.onComplete=function()
+      {
+            ref.loadRecommendations(this.output);
+      };
+      Stage.addListener(this);
+      this.setButtons();
+   };
+   com.jeroenwijering.players.RecommendationsView extends com.jeroenwijering.players.AbstractView
+   register2=register1.prototype;
+   register2.setButtons=function()
+   {
+      var ref=this
+      this.maximum=Math.floor((this.config.displaywidth-44)/70);
+      this.clip._visible=false;
+      this.clip.txt._x=10;
+      this.clip.txt._width=this.config.displaywidth-20;
+      this.clip.txt.textColor=this.config.backcolor;
+      this.clip.prv._x=this.config.displaywidth/2-this.maximum*35;
+      this.clip.nxt._x=this.config.displaywidth/2+this.maximum*35;
+      this.clip.prv.col=new Color(this.clip.prv);
+      this.clip.prv.col.setRGB(this.config.backcolor);
+      this.clip.prv.onRelease=function()
+      {
+            this.col.setRGB(ref.config.backcolor);
+            ref.showRecommendations(ref.offset-ref.maximum);
+      };
+      this.clip.prv._visible=false;
+      this.clip.nxt.col=new Color(this.clip.nxt);
+      this.clip.nxt.col.setRGB(this.config.backcolor);
+      this.clip.nxt.onRelease=function()
+      {
+            this.col.setRGB(ref.config.backcolor);
+            ref.showRecommendations(ref.offset+ref.maximum);
+      };
+      this.clip.nxt._visible=false;
+      this.clip.itm._visible=false;
+      register2=0;
+      while(register2<this.maximum)
+      {
+            this.clip.itm.duplicateMovieClip("itm"+register2,register2);
+            this.clip["itm"+register2]._x=this.clip.prv._x+register2*70+5;
+            this.clip["itm"+register2].ldr=new com.jeroenwijering.utils.ImageLoader(this.clip["itm"+register2].img,"true",60,45);
+            this.clip["itm"+register2].ldr.onLoadFinished=function()
+            {
+               com.jeroenwijering.utils.Animations.fadeIn(this.targetClip._parent);
+            };
+            this.clip["itm"+register2].img.setMask(this.clip["itm"+register2].msk);
+            this.clip["itm"+register2].cl1=new Color(this.clip["itm"+register2].bdr);
+            this.clip["itm"+register2].cl1.setRGB(this.config.frontcolor);
+            this.clip["itm"+register2].cl2=new Color(this.clip["itm"+register2].icn);
+            this.clip["itm"+register2].cl2.setRGB(this.config.backcolor);
+            this.clip["itm"+register2].icn._visible=false;
+            this.clip["itm"+register2].onRollOver=function()
+            {
+               this.cl1.setRGB(ref.config.backcolor);
+               this.icn._visible=true;
+               ref.setTitle(this.num);
+            };
+            this.clip["itm"+register2].onRollOut=function()
+            {
+               this.cl1.setRGB(ref.config.frontcolor);
+               this.icn._visible=false;
+               ref.clearTitle();
+            };
+            this.clip["itm"+register2].onRelease=function()
+            {
+               ref.getLink(this.num);
+            };
+            this.clip["itm"+register2]._visible=false;
+            this.clip["itm"+register2]._alpha=0;
+            register2=register2+1;
+      }
+   };
+   register2.loadRecommendations=function(rcm)
+   {
+      this.recommendations=new Array();
+      register5=0;
+      while(register5<rcm.childs.length)
+      {
+            register4=new Object();
+            register2=0;
+            while(register2<rcm.childs[register5].childs.length)
+            {
+               register4.rcm.childs[register5].childs[register2].name=rcm.childs[register5].childs[register2].value;
+               register2=register2+1;
+            }
+            this.recommendations.push(register4);
+            register5=register5+1;
+      }
+      if(this.recommendations.length<this.maximum)
+      {
+            register5=0;
+            while(register5<this.recommendations.length)
+            {
+               this.clip["itm"+register5]._x=this.clip["itm"+register5]._x+35*(this.maximum-this.recommendations.length);
+               register5=register5+1;
+            }
+      }
+      this.showRecommendations(0);
+   };
+   register2.showRecommendations=function(off)
+   {
+      !(arguments.length==1)?null:register0;
+      if(!(this.offset==0))
+      {
+            register0=true;
+            this.clip.prv._visible=true;
+      }
+      else
+      {
+            register0=false;
+            this.clip.prv._visible=false;
+      }
+      if(this.offset<this.recommendations.length-this.maximum)
+      {
+            register0=true;
+            this.clip.nxt._visible=true;
+      }
+      else
+      {
+            register0=false;
+            this.clip.nxt._visible=false;
+      }
+      register3=0;
+      while(register3<this.maximum)
+      {
+            this.clip["itm"+register3].num=register3+this.offset;
+            if(this.recommendations[register3+this.offset]==undefined)
+            {
+               this.clip["itm"+register3]._visible=false;
+               this.clip["itm"+register3]._alpha=0;
+            }
+            else
+            {
+               this.clip["itm"+register3].ldr.loadImage(this.recommendations[register3+this.offset].image);
+            }
+            register3=register3+1;
+      }
+      if(Stage.displayState=="fullScreen")
+      {
+            this.clip._x=Math.round(Stage.width/2-this.clip._width/2)-10;
+            this.clip._y=Stage.height-165;
+      }
+      else
+      {
+            this.clip._x=Math.round(this.config.displaywidth/2-this.clip._width/2)-10;
+            this.clip._y=this.config.displayheight-85;
+      }
+   };
+   register2.setState=function(stt)
+   {
+      if(stt==3)
+      {
+            if(this.recommendations==undefined)
+            {
+               this.parser.parse(this.config.recommendations);
+            }
+            else
+            {
+               this.showRecommendations();
+            }
+            this.clip._visible=true;
+            this.config.clip.display.thumb._alpha=33;
+      }
+      else
+      {
+            if(stt==1||stt==2)
+            {
+               this.clip._visible=false;
+               this.config.clip.display.thumb._alpha=100;
+            }
+      }
+   };
+   register2.setTitle=function(idx)
+   {
+      this.clip.txt.text=this.recommendations[idx].title;
+   };
+   register2.clearTitle=function()
+   {
+      this.clip.txt.text="";
+   };
+   register2.getLink=function(idx)
+   {
+      getUrl(this.recommendations[idx].link,this.config.linktarget);
+   };
+   register2.onResize=function()
+   {
+      if(!(this.config.displayheight<this.config.height))
+      {
+            register0=Stage.height;
+            this.config.displayheight=Stage.height;
+            this.config.height=register0;
+            register0=Stage.width;
+            this.config.displaywidth=Stage.width;
+            this.config.width=register0;
+      }
+      this.showRecommendations();
+   };
+   register2.onFullScreen=function(fs)
+   {
+      this.showRecommendations();
+   };
+   register2.offset=0;
+}

@@ -1,0 +1,367 @@
+movie 'tmp/xmlload.swf' {
+// flash 8, total frames: 1, frame rate: 30 fps, 960x252 px, compressed
+
+  movieClip 1  {
+  }
+
+  movieClip 2 Slider {
+
+    #initclip
+      Object.registerClass('Slider', Slider);
+    #endinitclip
+  }
+
+  movieClip 4  {
+  }
+
+  movieClip 5 PImage {
+
+    #initclip
+      Object.registerClass('PImage', PImage);
+    #endinitclip
+  }
+
+  movieClip 7 overBorder {
+  }
+
+  movieClip 10  {
+  }
+
+  movieClip 13 item3 {
+  }
+
+  movieClip 16  {
+
+    frame 1 {
+      stop();
+    }
+  }
+
+  movieClip 19  {
+
+    frame 1 {
+      stop();
+    }
+  }
+
+  movieClip 20  {
+  }
+
+  movieClip 24 item2 {
+  }
+
+  movieClip 28  {
+
+    frame 1 {
+      stop();
+    }
+  }
+
+  movieClip 31 item {
+  }
+
+  frame 1 {
+    System.useCodepage = true;
+    System.security.allowDomain('*');
+    Stage.scaleMode = 'noScale';
+    var myURL = _root.url;
+    var xmldoc;
+    xmldoc = new XML();
+    xmldoc.ignoreWhite = true;
+    xmldoc.onLoad = function (s) {
+      if (s) {
+        attachMovie('Slider', 'mSlider', 10, {'data': xmldoc.firstChild});
+        trace(sourceLoad);
+        if (sourceLoad == undefined) {
+        } else {
+          loadMovie(sourceLoad, mSlider.click2);
+          mSlider.click2._x -= 105;
+          mSlider.click2._y -= 70;
+        }
+      }
+    };
+
+    xmldoc.load(_root.url);
+  }
+
+  movieClip 36 __Packages.PImage {
+
+    #initclip
+      if (!_global.PImage) {
+        var v1 = function () {
+          super();
+          this.createChildren();
+          this.init();
+        };
+
+        _global.PImage = v1;
+        _global.PImage extends MovieClip;
+        var v2 = v1.prototype;
+        v2.createChildren = function () {
+          this.content = this.createEmptyMovieClip('content', 10);
+        };
+
+        v2.init = function () {
+          if (this.width == undefined) {
+            this.width = this._width;
+          }
+          if (this.height == undefined) {
+            this.height = this._height;
+          }
+          this._xscale = 100;
+          this._yscale = 100;
+          this.Background._width = this.width;
+          this.Background._height = this.height;
+          if (this.url != undefined) {
+            this.load(this.url);
+          }
+        };
+
+        v2.load = function (surl) {
+          if (this.mLoader != undefined) {
+            this.mLoader.removeListener(this);
+            delete this.mLoader;
+          }
+          this.mLoader = new MovieClipLoader();
+          this.mLoader.addListener(this);
+          this.loaded = false;
+          var v2 = surl;
+          if (v2.indexOf('cimg2') != -1) {
+            v2 = 'http://cimg2.163.com' + (v2.split('163.com'))[1];
+          }
+          this.mLoader.loadClip(v2, this.content);
+          this.url = v2;
+        };
+
+        v2.onLoadInit = function (target) {
+          this.content._width = this.width;
+          this.content._height = this.height;
+          this.loaded = true;
+        };
+
+        v2.setSize = function (w, h) {
+          this.content._width = w;
+          this.content._height = h;
+          this.Background._width = w;
+          this.Background._height = h;
+          this.width = w;
+          this.height = h;
+        };
+
+        v2.autoSize = false;
+        ASSetPropFlags(_global.PImage.prototype, null, 1);
+      }
+    #endinitclip
+  }
+
+  movieClip 37 __Packages.Slider {
+
+    #initclip
+      if (!_global.Slider) {
+        var v1 = function () {
+          super();
+          this.createChildrens();
+          this.init();
+        };
+
+        _global.Slider = v1;
+        _global.Slider extends MovieClip;
+        var v2 = v1.prototype;
+        v2.createChildrens = function () {
+          this.click2.swapDepths(9);
+          this.clip.clip_left.onRollOver = function () {
+            this._parent._parent.stopAutoPlay();
+          };
+
+          this.clip.clip_left.onRollOut = function () {
+            this._parent._parent.startAutoPlay();
+          };
+
+          this.clip.clip_left.onReleaseOutside = function () {
+            this._parent._parent.autoPre();
+          };
+
+          this.clip.clip_left.onRelease = this.clip.clip_left.onReleaseOutside;
+          this.clip.clip_right.onRollOver = function () {
+            this._parent._parent.stopAutoPlay();
+          };
+
+          this.clip.clip_right.onRollOut = function () {
+            this._parent._parent.startAutoPlay();
+          };
+
+          this.clip.clip_right.onReleaseOutside = function () {
+            this._parent._parent.autoNext();
+          };
+
+          this.clip.clip_right.onRelease = this.clip.clip_right.onReleaseOutside;
+          this.Thumbs = this.createEmptyMovieClip('Thumbs', 5);
+          this.Thumbs._x = 780;
+          this.Thumbs._y = 6;
+          this.ViewMask = this.createEmptyMovieClip('ViewMask', 3);
+          this.ViewMask.beginFill(0);
+          this.ViewMask.moveTo(0, 0);
+          this.ViewMask.lineTo(420, 0);
+          this.ViewMask.lineTo(420, 240);
+          this.ViewMask.lineTo(0, 240);
+          this.ViewMask.lineTo(0, 0);
+          this.ViewMask.endFill();
+          this.ViewMask._x = 360;
+          this.ViewMask._y = 6;
+          this.ViewContainer = this.createEmptyMovieClip('ViewContainer', 2);
+          this.ViewContainer._x = 360;
+          this.ViewContainer._y = 6;
+          this.ViewContainer.setMask(this.ViewMask);
+          this.ViewContainer.move = function (iy) {
+            this.gy = -iy * 240 + 6;
+            this.onEnterFrame = function () {
+              this._y += (this.gy - this._y) / 5;
+              if (Math.abs(this.gy - this._y) < 0.5) {
+                this._y = this.gy;
+                delete this.onEnterFrame;
+              }
+            };
+
+          };
+
+        };
+
+        v2.init = function () {
+          if (this.data != undefined) {
+            this.createFromXML();
+          }
+          this.Show(0);
+          this.startAutoPlay();
+        };
+
+        v2.createFromXML = function () {
+          var v4 = 0;
+          var v3 = this.data.firstChild;
+          while (v3 != null) {
+            var v14 = this.Thumbs.attachMovie('item', 'thumb_' + v4, v4 + 1);
+            v14._alpha = 100;
+            v14.line._visible = false;
+            v14._y = v4 * 60;
+            var v8 = this.xmlEscape(String(v3.childNodes[1].firstChild));
+            v14.des = v8;
+            var v9 = this.xmlEscape(String(v3.childNodes[0].firstChild));
+            v14.leftTitle = v9;
+            v14.index = v4;
+            var v6 = v3.attributes.title + '';
+            if (v6.indexOf('=') == -1) {
+              v14.title.text = v6;
+            } else {
+              var v7 = v6.split('=');
+              v14.title.htmlText = v7[0] + '<br>' + v7[1];
+            }
+            v14.href = v3.attributes.href;
+            v14.bg.useHandCursor = true;
+            v14.bg.owner = this;
+            v14.bg.index = v4;
+            v14.bg.onRollOver = function () {};
+
+            v14.bg.onReleaseOutside = function () {};
+
+            v14.bg.onRollOut = v14.bg.onReleaseOutside;
+            v14.bg.onRelease = function () {
+              this.owner.Show(this.index);
+            };
+
+            var v5 = this.ViewContainer.attachMovie('PImage', 'img_' + v4, v4, {'width': 420, 'height': 240, 'url': v3.attributes.imageurl});
+            v5._y = v4 * 240;
+            v5.href = v3.attributes.href;
+            v5.onRollOver = function () {
+              this._parent._parent.stopAutoPlay();
+            };
+
+            v5.onRollOut = function () {
+              this._parent._parent.startAutoPlay();
+            };
+
+            v5.onRelease = function () {
+              _root.getURL(this.href, '_blank');
+            };
+
+            ++v4;
+            v3 = v3.nextSibling;
+          }
+          v14 = this.Thumbs.thumb_0;
+          var v13 = new TextFormat();
+          v14.bg.mmc._alpha = 100;
+          v13.bold = true;
+          v14.title.setTextFormat(v13);
+        };
+
+        v2.Show = function (index) {
+          this.lastPlay.bg.gotoAndStop(1);
+          var v4 = new TextFormat();
+          v4.bold = false;
+          v4.color = 4013373;
+          this.lastPlay.title.setTextFormat(v4);
+          var v3 = this.Thumbs['thumb_' + index];
+          v3.bg.gotoAndStop(2);
+          v4.bold = false;
+          v4.color = 16763904;
+          v3.title.setTextFormat(v4);
+          _root.desTxt.htmlText = v3.des;
+          _root.titleTxt.htmlText = v3.leftTitle;
+          this.ViewContainer.move(index);
+          v3.bg._alpha = 100;
+          v3._alpha = 100;
+          this.lastPlay = v3;
+          this.curPlay = index;
+        };
+
+        v2.autoNext = function () {
+          ++this.curPlay;
+          if (this.curPlay >= this.data.childNodes.length) {
+            this.curPlay = 0;
+          }
+          this.Show(this.curPlay);
+        };
+
+        v2.autoPre = function () {
+          --this.curPlay;
+          if (this.curPlay < 0) {
+            this.curPlay = this.data.childNodes.length - 1;
+          }
+          this.Show(this.curPlay);
+        };
+
+        v2.startAutoPlay = function () {};
+
+        v2.stopAutoPlay = function () {
+          clearInterval(this.AutoPlayIntv);
+        };
+
+        v2.xmlEscape = function (s) {
+          var v4 = s;
+          var v5 = ['&lt;', '&gt;', '&quot;'];
+          var v6 = ['<', '>', '"'];
+          var v3 = 0;
+          while (v3 < v5.length) {
+            var v2 = v4.split(v5[v3]);
+            var v7 = '';
+            if (v2.length > 0) {
+              v4 = '';
+              var v1 = 0;
+              while (v1 < v2.length) {
+                if (v1 < v2.length - 1) {
+                  v4 += v2[v1] + v6[v3];
+                } else {
+                  v4 += v2[v1];
+                }
+                ++v1;
+              }
+            }
+            ++v3;
+          }
+          return v4;
+        };
+
+        v2.curPlay = 0;
+        ASSetPropFlags(_global.Slider.prototype, null, 1);
+      }
+    #endinitclip
+  }
+}

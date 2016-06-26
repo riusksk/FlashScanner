@@ -1,0 +1,504 @@
+movie 'tmp/geturl-loadmovie.swf' {
+// flash 9, total frames: 1, frame rate: 30 fps, 1000x740 px, compressed
+
+  movieClip 4  {
+  }
+
+  button 5 {
+
+    on (release, keyPress '<Home>') {
+      _root.gotoPage(_root.content_page, true);
+      _root.snd_page.start();
+    }
+  }
+
+  movieClip 7  {
+  }
+
+  button 8 {
+
+    on (release, keyPress '<Up>') {
+      _root.gotoFirstPage();
+      _root.snd_page.start();
+    }
+  }
+
+  button 9 {
+
+    on (release, keyPress '<Down>') {
+      _root.gotoLastPage();
+      _root.snd_page.start();
+    }
+  }
+
+  movieClip 11  {
+  }
+
+  button 12 {
+
+    on (release) {
+      _root.prevPage();
+      _root.snd_page.start();
+    }
+  }
+
+  button 13 {
+
+    on (release) {
+      _root.nextPage();
+      _root.snd_page.start();
+    }
+  }
+
+  movieClip 15  {
+  }
+
+  movieClip 16  {
+  }
+
+  movieClip 17  {
+  }
+  
+  // unknown tag 88 length 26
+
+  movieClip 20  {
+
+    frame 1 {
+      function pgs() {
+        bar.bg._width = (_root.page / _root.maxpage) * 130;
+        p_no.text = 'PAGE ' + _root.page + '/' + _root.maxpage;
+      }
+
+      this.onEnterFrame = pgs;
+      p_no.autoSize = 'center';
+    }
+  }
+
+  movieClip 25  {
+
+    frame 1 {
+      time = new Date();
+      hour = time.getHours();
+      minute = time.getMinutes();
+      second = time.getSeconds();
+      milli = int(time.getMilliseconds() / 10);
+      if (minute < 10) {
+        minute = '0' + minute;
+      }
+      if (second < 10) {
+        second = '0' + second;
+      }
+      if (milli < 10) {
+        milli = '0' + milli;
+      }
+      if (hour < 12) {
+        half = '上午';
+      } else {
+        half = '下午';
+      }
+      yeahtext = time.getFullYear() + '年';
+      daytext = time.getMonth() + 1 + '月' + time.getDate() + '日';
+      timetext = hour + ':' + minute + ':' + second;
+    }
+  }
+
+  movieClip 26  {
+  }
+
+  button 27 {
+
+    on (release, keyPress '<Enter>') {
+      if (!isNaN(goto_number_txt.text)) {
+        _root.gotoPage(goto_number_txt.text, true);
+      } else {
+        goto_number_txt.text = '';
+      }
+    }
+  }
+
+  movieClip 29  {
+  }
+
+  movieClip 32  {
+  }
+
+  movieClip 34  {
+  }
+
+  movieClip 35  {
+
+    frame 1 {
+      function showMSG(MSG) {
+        msgbox.mymsg.htmlText = MSG;
+      }
+
+      function mytimer() {
+        this.onEnterFrame = function () {
+          timer = getTimer();
+          if (timer < overtime * 1000) {
+            trace(timer);
+            showMSG('正在读取服务器数据...');
+          } else {
+            delete this.onEnterFrame;
+            trace(timer);
+            showMSG('显示此处信息需网络支持，请检查网络链接是否正常');
+          }
+        };
+
+      }
+
+      function run() {
+        function scrol() {
+          if (k == 0) {
+            showMSG(msg);
+            k = 1;
+          } else {
+            if (k == 1) {
+              m += 1;
+              if (m >= t * 10) {
+                k = 2;
+                m = 0;
+              }
+            } else {
+              if (k == 2) {
+                if (a < 100) {
+                  a += 10;
+                  msgmark._alpha = a;
+                } else {
+                  var v1 = random(newsArray.length);
+                  msg = '<a href=\'' + linkArray[v1] + '\' target=\'_blank\'>' + newsArray[v1] + '</a>';
+                  showMSG(msg);
+                  k = 3;
+                }
+              } else {
+                if (k == 3) {
+                  if (a > 0) {
+                    a -= 10;
+                    msgmark._alpha = a;
+                  } else {
+                    k = 1;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        var v1 = new String();
+        v1 = lv.texts;
+        mylinks = lv.links;
+        newsArray = v1.split('|', v1.length);
+        linkArray = mylinks.split('|', mylinks.length);
+        var v2 = random(newsArray.length);
+        msg = '<a href=\'' + linkArray[v2] + '\' target=\'_blank\'>' + newsArray[v2] + '</a>';
+        var v3 = setInterval(scrol, runFre);
+      }
+
+      var k = 0;
+      var t = 3;
+      var a = 0;
+      msgmark._alpha = a;
+      var timer;
+      var overtime = 20;
+      var fliePath = _root.msg_url + 'msg.txt';
+      var newsArray;
+      var linkArray;
+      var runFre = _root.msg_speed;
+      var lv = new LoadVars();
+      var mydate = new Date();
+      var myrandom = mydate.getTime();
+      lv.load(fliePath + '?' + myrandom);
+      lv.onLoad = function (success) {
+        if (success) {
+          run();
+        } else {
+          mytimer();
+        }
+      };
+
+    }
+  }
+
+  movieClip 37  {
+  }
+
+  button 38 {
+
+    on (release) {
+      if (_root.swc_exit_link == 'true') {
+        if (_root.url_exit != '') {
+          getURL(_root.url_exit, '_blank');
+        }
+        fscommand('quit');
+      } else {
+        fscommand('quit');
+      }
+    }
+  }
+
+  movieClip 39  {
+  }
+
+  button 40 {
+
+    on (release) {
+      fscommand('fullscreen', 'true');
+      _root.buttons.button_1._visible = true;
+      _root.buttons.button_f._visible = false;
+    }
+  }
+
+  button 41 {
+
+    on (press) {
+      fscommand('setWindowState', 1);
+    }
+  }
+
+  button 42 {
+
+    on (release) {
+      fscommand('fullscreen', 'false');
+      _root.buttons.button_f._visible = true;
+      _root.buttons.button_1._visible = false;
+    }
+  }
+
+  movieClip 44  {
+  }
+
+  button 45 {
+
+    on (release) {
+      if (_root.url3 != '') {
+        getURL(_root.url3, '_blank');
+      }
+    }
+  }
+
+  movieClip 47  {
+  }
+
+  button 48 {
+
+    on (release) {
+      if (_root.url2 != '') {
+        getURL(_root.url2, '_blank');
+      }
+    }
+  }
+
+  movieClip 50  {
+  }
+
+  button 51 {
+
+    on (release) {
+      if (_root.url1 != '') {
+        getURL(_root.url1, '_blank');
+      }
+    }
+  }
+
+  movieClip 55  {
+  }
+
+  movieClip 58  {
+  }
+
+  movieClip 59  {
+  }
+  
+  // unknown tag 88 length 68
+
+  movieClip 67  {
+
+    frame 1 {
+      stop();
+    }
+
+    frame 2 {
+      stop();
+    }
+  }
+  
+  // unknown tag 88 length 235
+
+  movieClip 70  {
+  }
+
+  movieClip 71  {
+
+    frame 1 {
+      var snd = 70;
+      if (_root.default_volume == undefined) {
+        xx = snd;
+      } else {
+        xx = _root.default_volume;
+      }
+      xx = xx * 70 / 100 + 21;
+      if (xx > 91) {
+        btn._x = 91;
+      } else {
+        btn._x = xx;
+      }
+      bar.bg._width = btn._x - 21;
+      snd = Math.ceil((btn._x - 21) * 100 / 71);
+      volume_mc.volume_txt.text = snd;
+      my_sound.setVolume(snd);
+      var ctrl = 1;
+      var info = new Array();
+      my_sound = new Sound();
+      my_sound.setVolume(snd);
+      btn.onPress = function () {
+        startDrag(btn, false, 21, 5, 92, 5);
+        bar.onEnterFrame = function () {
+          this.bg._width = btn._x - 21;
+          snd = Math.ceil((btn._x - 21) * 100 / 71);
+          volume_mc.volume_txt.text = snd;
+          my_sound.setVolume(snd);
+        };
+
+      };
+
+      btn.onReleaseOutside = function () {
+        delete bar.onEnterFrame;
+        stopDrag();
+      };
+
+      btn.onRelease = btn.onReleaseOutside;
+      bar.onPress = function () {
+        if (_xmouse > 92) {
+          btn._x = 92;
+        } else {
+          btn._x = _xmouse - 3;
+        }
+        this.bg._width = btn._x - 21;
+        snd = Math.ceil((btn._x - 21) * 100 / 71);
+        volume_mc.volume_txt.text = snd;
+        my_sound.setVolume(snd);
+      };
+
+      icon_btn.onRelease = function () {
+        if (ctrl == 1) {
+          ctrl = 0;
+          info[1] = btn._x;
+          info[2] = bar.bg._width;
+          info[3] = snd;
+          icon_btn.gotoAndStop(2);
+          btn._x = 21;
+          btn.enabled = false;
+          bar.enabled = false;
+          bar.bg._width = 0;
+          volume_mc.volume_txt.text = 0;
+          snd = 0;
+          my_sound.setVolume(snd);
+        } else {
+          ctrl = 1;
+          btn._x = info[1];
+          bar.bg._width = info[2];
+          snd = info[3];
+          icon_btn.gotoAndStop(1);
+          btn.enabled = true;
+          bar.enabled = true;
+          volume_mc.volume_txt.text = snd;
+          my_sound.setVolume(snd);
+        }
+      };
+
+    }
+  }
+
+  movieClip 73  {
+  }
+
+  movieClip 74  {
+  }
+  
+  // unknown tag 88 length 235
+
+  movieClip 79  {
+  }
+
+  movieClip 80  {
+
+    frame 1 {
+      function autoFlip() {
+        if (autoFlipSecondSet == 0) {
+          return undefined;
+        }
+        ++autoFlipSecondPass;
+        if (_root.page == _root.maxpage) {
+          return undefined;
+        }
+        if (autoFlipSecondPass >= autoFlipSecondSet) {
+          autoFlipSecondPass = 0;
+          _root.snd_page.start();
+          _root.nextPage();
+        }
+      }
+
+      var snd = 0;
+      if (_root.default_auto == undefined) {
+        xx = snd;
+      } else {
+        xx = _root.default_auto;
+      }
+      xx = xx * 70 / 100 + 13.5;
+      if (xx > 71) {
+        btn._x = 71;
+      } else {
+        btn._x = xx;
+      }
+      bar.bg._width = btn._x - 13.5;
+      snd = Math.ceil((btn._x - 13.5) * 100 / 71);
+      volume_mc.volume_txt.text = snd;
+      var ctrl = 1;
+      var info = new Array();
+      btn.onPress = function () {
+        startDrag(btn, false, 13.5, 2, 56.5, 2);
+        bar.onEnterFrame = function () {
+          this.bg._width = btn._x - 13.5;
+          snd = Math.ceil((btn._x - 13.5) * 100 / 71);
+          volume_mc.volume_txt.text = snd;
+          autoFlipSecondSet = snd;
+        };
+
+      };
+
+      btn.onReleaseOutside = function () {
+        delete bar.onEnterFrame;
+        stopDrag();
+      };
+
+      btn.onRelease = btn.onReleaseOutside;
+      bar.onPress = function () {
+        if (_xmouse > 72) {
+          btn._x = 72;
+        } else {
+          btn._x = _xmouse - 3;
+        }
+        this.bg._width = btn._x - 32;
+        snd = Math.ceil((btn._x - 32) * 100 / 71);
+        volume_mc.volume_txt.text = snd;
+        autoFlipSecondSet = snd;
+      };
+
+      autoFlipSecondPass = 0;
+      autoFlipSecondSet = snd;
+      setInterval(autoFlip, 1000);
+    }
+  }
+
+  movieClip 81  {
+  }
+
+  movieClip 83  {
+
+    frame 1 {
+      if (_root.attachfile7 != '') {
+        avaterloadbox.loadMovie(_root.attachfile7);
+      }
+    }
+  }
+}

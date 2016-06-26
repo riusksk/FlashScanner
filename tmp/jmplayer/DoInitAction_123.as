@@ -1,0 +1,191 @@
+if(!_global.com)
+{
+   _global.com=new Object();
+}
+if(!_global.com.jeroenwijering)
+{
+   _global.com.jeroenwijering=new Object();
+}
+if(!_global.com.jeroenwijering.utils)
+{
+   _global.com.jeroenwijering.utils=new Object();
+}
+if(!_global.com.jeroenwijering.utils.Scroller)
+{
+   register1=function(tgt, msk, asc, fcl, hcl)
+   {
+      this.targetClip=tgt;
+      this.maskClip=msk;
+      !(arguments.length>2)?null:register0;
+      !(arguments.length>3)?null:register0;
+      !(arguments.length>4)?null:register0;
+      this.sizeRatio=this.maskClip._height/this.targetClip._height;
+      if(this.autoScroll==false)
+      {
+            this.drawScrollbar();
+      }
+      else
+      {
+            this.scrollInterval=setInterval(this,"doAutoscroll",50);
+      }
+      if(System.capabilities.os.toLowerCase().indexOf("mac")==-1)
+      {
+            Mouse.addListener(this);
+      }
+   };
+   com.jeroenwijering.utils.Scroller=function(tgt, msk, asc, fcl, hcl)
+   {
+      this.targetClip=tgt;
+      this.maskClip=msk;
+      !(arguments.length>2)?null:register0;
+      !(arguments.length>3)?null:register0;
+      !(arguments.length>4)?null:register0;
+      this.sizeRatio=this.maskClip._height/this.targetClip._height;
+      if(this.autoScroll==false)
+      {
+            this.drawScrollbar();
+      }
+      else
+      {
+            this.scrollInterval=setInterval(this,"doAutoscroll",50);
+      }
+      if(System.capabilities.os.toLowerCase().indexOf("mac")==-1)
+      {
+            Mouse.addListener(this);
+      }
+   };
+   register2=register1.prototype;
+   register2.drawScrollbar=function()
+   {
+      this.targetClip._parent.createEmptyMovieClip("scrollbar",this.targetClip._parent.getNextHighestDepth());
+      this.SCROLLER_CLIP=this.targetClip._parent.scrollbar;
+      this.SCROLLER_CLIP._x=this.maskClip._x+this.maskClip._width-1;
+      this.SCROLLER_CLIP._y=this.maskClip._y+3;
+      this.SCROLLER_CLIP.createEmptyMovieClip("back",0);
+      this.SCROLLER_CLIP.back._alpha=0;
+      this.SCROLLER_CLIP.back._y=-3;
+      this.drawSquare(this.SCROLLER_CLIP.back,12,this.maskClip._height,this.frontColor);
+      this.SCROLLER_CLIP.createEmptyMovieClip("bar",1);
+      this.SCROLLER_CLIP.bar._x=4;
+      this.SCROLLER_CLIP.bar._alpha=50;
+      this.drawSquare(this.SCROLLER_CLIP.bar,4,this.maskClip._height-5,this.frontColor);
+      this.SCROLLER_CLIP.createEmptyMovieClip("front",2);
+      this.SCROLLER_CLIP.front._x=3;
+      this.drawSquare(this.SCROLLER_CLIP.front,6,this.SCROLLER_CLIP.bar._height*this.sizeRatio,this.frontColor);
+      this.SCROLLER_CLIP.front.createEmptyMovieClip("bg",1);
+      this.SCROLLER_CLIP.front.bg._x=-3;
+      this.SCROLLER_CLIP.front.bg._alpha=0;
+      this.drawSquare(this.SCROLLER_CLIP.front.bg,12,this.SCROLLER_CLIP.front._height,this.frontColor);
+      this.SCROLLER_FRONT_COLOR=new Color(this.SCROLLER_CLIP.front);
+      this.setScrollbarEvents();
+   };
+   register2.onMouseWheel=function(dta)
+   {
+      this.scrollTo(this.currentScroll-dta*20);
+   };
+   register2.doAutoscroll=function()
+   {
+      if(this.maskClip._xmouse>0&&this.maskClip._xmouse<this.maskClip._width/this.maskClip._xscale/100&&this.maskClip._ymouse>0&&this.maskClip._ymouse<this.maskClip._height/this.maskClip._yscale/100)
+      {
+            register2=this.maskClip._ymouse*this.maskClip._yscale/100-this.maskClip._height/2;
+            this.scrollTo(this.currentScroll+Math.floor(register2*this.AUTOSCROLL_SPEED));
+      }
+   };
+   register2.setScrollbarEvents=function()
+   {
+      var instance=this
+      register0=function()
+      {
+            instance.SCROLLER_FRONT_COLOR.setRGB(instance.lightColor);
+      };
+      this.SCROLLER_CLIP.back.onRollOver=function()
+      {
+            instance.SCROLLER_FRONT_COLOR.setRGB(instance.lightColor);
+      };
+      this.SCROLLER_CLIP.front.onRollOver=register0;
+      register0=function()
+      {
+            instance.SCROLLER_FRONT_COLOR.setRGB(instance.frontColor);
+      };
+      this.SCROLLER_CLIP.back.onRollOut=function()
+      {
+            instance.SCROLLER_FRONT_COLOR.setRGB(instance.frontColor);
+      };
+      this.SCROLLER_CLIP.front.onRollOut=register0;
+      this.SCROLLER_CLIP.back.onRelease=function()
+      {
+            if(this._ymouse>this._parent.front._y+this._parent.front._height)
+            {
+                  instance.scrollTo(instance.currentScroll+instance.maskClip._height/2);
+            }
+            else
+            {
+                  if(this._ymouse<this._parent.front._y)
+                  {
+                     instance.scrollTo(instance.currentScroll-instance.maskClip._height/2);
+                  }
+            }
+      };
+      this.SCROLLER_CLIP.front.onPress=function()
+      {
+            this.startDrag(false,3,0,3,instance.SCROLLER_CLIP.bar._height-this._height);
+            instance.scrollInterval=setInterval(instance,"scrollTo",100);
+      };
+      register0=function()
+      {
+            this.stopDrag();
+            clearInterval(instance.scrollInterval);
+      };
+      this.SCROLLER_CLIP.front.onReleaseOutside=function()
+      {
+            this.stopDrag();
+            clearInterval(instance.scrollInterval);
+      };
+      this.SCROLLER_CLIP.front.onRelease=register0;
+      this.scrollTo(this.maskClip._y-this.targetClip._y);
+   };
+   register2.scrollTo=function(yps)
+   {
+      if(arguments.length==0&&this.autoScroll==false)
+      {
+            yps=this.SCROLLER_CLIP.front._y*this.maskClip._height/this.SCROLLER_CLIP.front._height;
+      }
+      if(yps<5)
+      {
+            yps=0;
+      }
+      else
+      {
+            if(yps>this.targetClip._height-this.maskClip._height-5)
+            {
+               yps=this.targetClip._height-this.maskClip._height;
+            }
+      }
+      com.jeroenwijering.utils.Animations.easeTo(this.targetClip,this.targetClip._x,this.maskClip._y-yps);
+      this.SCROLLER_CLIP.front._y=yps*this.SCROLLER_CLIP.front._height/this.maskClip._height;
+      this.currentScroll=yps;
+   };
+   register2.purgeScrollbar=function()
+   {
+      clearInterval(this.scrollInterval);
+      Mouse.removeListener(this);
+      this.scrollTo(0);
+      this.SCROLLER_CLIP.removeMovieClip();
+   };
+   register2.drawSquare=function(tgt, wth, hei, clr)
+   {
+      tgt.clear();
+      tgt.beginFill(clr,100);
+      tgt.moveTo(0,0);
+      tgt.lineTo(wth,0);
+      tgt.lineTo(wth,hei);
+      tgt.lineTo(0,hei);
+      tgt.lineTo(0,0);
+      tgt.endFill();
+   };
+   register2.autoScroll=false;
+   register2.frontColor=0;
+   register2.lightColor=0;
+   register2.currentScroll=0;
+   register2.AUTOSCROLL_SPEED=0.5;
+}

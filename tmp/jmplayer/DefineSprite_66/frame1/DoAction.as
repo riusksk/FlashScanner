@@ -1,0 +1,9 @@
+playpause.tabIndex=2;
+prev.tabIndex=3;
+stop.tabIndex=3;
+next.tabIndex=4;
+fs.tabIndex=5;
+vol.tabIndex=9;
+cc.tabIndex=7;
+au.tabIndex=8;
+dl.tabIndex=6;

